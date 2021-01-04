@@ -1,0 +1,53 @@
+package config;
+
+message CalendarConfig {
+	optional int32 year = 1;
+	optional int32 month = 2;
+
+	optional double cell_width = 3;
+	optional double cell_height = 4;
+	optional double cell_margin = 5;
+	optional double line_width = 6;
+
+	optional OutputType output_type = 7 [default = SVG];
+	optional PaperType paper_type = 8 [default = US_LETTER];
+	optional Language language = 9 [default = ENGLISH];
+	optional PlanType plan_type = 10 [default = ONE_YEAR];
+	optional string output_file_name = 11 [default = "output"];
+
+	optional string default_font_family = 12;
+
+	optional string day_number_font_family = 13;
+	optional double day_number_font_size = 14;
+
+	optional string day_plan_font_family = 15;
+	optional double day_plan_font_size = 16;
+
+	optional string month_label_font_family = 17;
+	optional double month_label_font_size = 18;
+	optional bool month_label_uppercase = 19 [default = false];
+
+	optional string wday_label_font_family = 20;
+	optional double wday_label_font_size = 21;
+}
+
+enum OutputType {
+	SVG = 0;
+	PDF = 1;
+	PNG = 2;
+}
+
+enum PaperType {
+	US_LETTER = 0;
+	A4 = 1;
+}
+
+enum Language {
+	ENGLISH = 0;
+	KOREAN = 1;
+}
+
+enum PlanType {
+	ONE_YEAR = 0;
+	NEW_TESTAMENT_AND_PSALMS = 1;
+}
