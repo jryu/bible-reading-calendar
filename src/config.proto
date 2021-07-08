@@ -1,3 +1,5 @@
+syntax = "proto2";
+
 package config;
 
 message CalendarConfig {
@@ -12,7 +14,11 @@ message CalendarConfig {
 	optional OutputType output_type = 7 [default = SVG];
 	optional PaperType paper_type = 8 [default = US_LETTER];
 	optional Language language = 9 [default = ENGLISH];
-	optional PlanType plan_type = 10 [default = ONE_YEAR];
+
+	optional CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+	optional DurationType duration_type = 23 [default = ONE_YEAR];
+	repeated DayOfTheWeek days_to_rest = 24;
+
 	optional string output_file_name = 11 [default = "output"];
 
 	optional string default_font_family = 12;
@@ -47,7 +53,27 @@ enum Language {
 	KOREAN = 1;
 }
 
-enum PlanType {
+enum CoverageType {
+	NEW_TESTAMENT = 0;
+	OLD_TESTAMENT = 1;
+	NEW_TESTAMENT_AND_PSALMS = 2;
+	WHOLE_BIBLE = 3;
+	WHOLE_BIBLE_NEW_TESTAMENT_FIRST = 4;
+	WHOLE_BIBLE_IN_PARALLEL = 5;
+}
+
+enum DurationType {
 	ONE_YEAR = 0;
-	NEW_TESTAMENT_AND_PSALMS = 1;
+	TWO_YEARS_FIRST_YEAR = 1;
+	TWO_YEARS_SECOND_YEAR = 2;
+}
+
+enum DayOfTheWeek {
+	SUN = 0;
+	MON = 1;
+	TUES = 2;
+	WED = 3;
+	THURS = 4;
+	FRI = 5;
+	SAT = 6;
 }

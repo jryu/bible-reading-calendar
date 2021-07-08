@@ -1,4 +1,7 @@
 language: KOREAN
+coverage_type: WHOLE_BIBLE_IN_PARALLEL
+duration_type: ONE_YEAR
+days_to_rest: SUN
 output_file_name: "ko_a4"
 output_type: PNG
 paper_type: A4

@@ -116,24 +116,72 @@ inline bool Language_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<Language>(
     Language_descriptor(), name, value);
 }
-enum PlanType {
-  ONE_YEAR = 0,
-  NEW_TESTAMENT_AND_PSALMS = 1
+enum CoverageType {
+  NEW_TESTAMENT = 0,
+  OLD_TESTAMENT = 1,
+  NEW_TESTAMENT_AND_PSALMS = 2,
+  WHOLE_BIBLE = 3,
+  WHOLE_BIBLE_NEW_TESTAMENT_FIRST = 4,
+  WHOLE_BIBLE_IN_PARALLEL = 5
 };
-bool PlanType_IsValid(int value);
-const PlanType PlanType_MIN = ONE_YEAR;
-const PlanType PlanType_MAX = NEW_TESTAMENT_AND_PSALMS;
-const int PlanType_ARRAYSIZE = PlanType_MAX + 1;
+bool CoverageType_IsValid(int value);
+const CoverageType CoverageType_MIN = NEW_TESTAMENT;
+const CoverageType CoverageType_MAX = WHOLE_BIBLE_IN_PARALLEL;
+const int CoverageType_ARRAYSIZE = CoverageType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* PlanType_descriptor();
-inline const ::std::string& PlanType_Name(PlanType value) {
+const ::google::protobuf::EnumDescriptor* CoverageType_descriptor();
+inline const ::std::string& CoverageType_Name(CoverageType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    PlanType_descriptor(), value);
+    CoverageType_descriptor(), value);
 }
-inline bool PlanType_Parse(
-    const ::std::string& name, PlanType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<PlanType>(
-    PlanType_descriptor(), name, value);
+inline bool CoverageType_Parse(
+    const ::std::string& name, CoverageType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<CoverageType>(
+    CoverageType_descriptor(), name, value);
+}
+enum DurationType {
+  ONE_YEAR = 0,
+  TWO_YEARS_FIRST_YEAR = 1,
+  TWO_YEARS_SECOND_YEAR = 2
+};
+bool DurationType_IsValid(int value);
+const DurationType DurationType_MIN = ONE_YEAR;
+const DurationType DurationType_MAX = TWO_YEARS_SECOND_YEAR;
+const int DurationType_ARRAYSIZE = DurationType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* DurationType_descriptor();
+inline const ::std::string& DurationType_Name(DurationType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    DurationType_descriptor(), value);
+}
+inline bool DurationType_Parse(
+    const ::std::string& name, DurationType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<DurationType>(
+    DurationType_descriptor(), name, value);
+}
+enum DayOfTheWeek {
+  SUN = 0,
+  MON = 1,
+  TUES = 2,
+  WED = 3,
+  THURS = 4,
+  FRI = 5,
+  SAT = 6
+};
+bool DayOfTheWeek_IsValid(int value);
+const DayOfTheWeek DayOfTheWeek_MIN = SUN;
+const DayOfTheWeek DayOfTheWeek_MAX = SAT;
+const int DayOfTheWeek_ARRAYSIZE = DayOfTheWeek_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* DayOfTheWeek_descriptor();
+inline const ::std::string& DayOfTheWeek_Name(DayOfTheWeek value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    DayOfTheWeek_descriptor(), value);
+}
+inline bool DayOfTheWeek_Parse(
+    const ::std::string& name, DayOfTheWeek* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<DayOfTheWeek>(
+    DayOfTheWeek_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -230,6 +278,16 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
+
+  // repeated .config.DayOfTheWeek days_to_rest = 24;
+  int days_to_rest_size() const;
+  void clear_days_to_rest();
+  static const int kDaysToRestFieldNumber = 24;
+  ::config::DayOfTheWeek days_to_rest(int index) const;
+  void set_days_to_rest(int index, ::config::DayOfTheWeek value);
+  void add_days_to_rest(::config::DayOfTheWeek value);
+  const ::google::protobuf::RepeatedField<int>& days_to_rest() const;
+  ::google::protobuf::RepeatedField<int>* mutable_days_to_rest();
 
   // optional string output_file_name = 11 [default = "output"];
   bool has_output_file_name() const;
@@ -377,6 +435,13 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   ::config::PaperType paper_type() const;
   void set_paper_type(::config::PaperType value);
 
+  // optional double day_number_font_size = 14;
+  bool has_day_number_font_size() const;
+  void clear_day_number_font_size();
+  static const int kDayNumberFontSizeFieldNumber = 14;
+  double day_number_font_size() const;
+  void set_day_number_font_size(double value);
+
   // optional .config.Language language = 9 [default = ENGLISH];
   bool has_language() const;
   void clear_language();
@@ -384,19 +449,12 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   ::config::Language language() const;
   void set_language(::config::Language value);
 
-  // optional .config.PlanType plan_type = 10 [default = ONE_YEAR];
-  bool has_plan_type() const;
-  void clear_plan_type();
-  static const int kPlanTypeFieldNumber = 10;
-  ::config::PlanType plan_type() const;
-  void set_plan_type(::config::PlanType value);
-
-  // optional double day_number_font_size = 14;
-  bool has_day_number_font_size() const;
-  void clear_day_number_font_size();
-  static const int kDayNumberFontSizeFieldNumber = 14;
-  double day_number_font_size() const;
-  void set_day_number_font_size(double value);
+  // optional bool month_label_uppercase = 19 [default = false];
+  bool has_month_label_uppercase() const;
+  void clear_month_label_uppercase();
+  static const int kMonthLabelUppercaseFieldNumber = 19;
+  bool month_label_uppercase() const;
+  void set_month_label_uppercase(bool value);
 
   // optional double day_plan_font_size = 16;
   bool has_day_plan_font_size() const;
@@ -419,12 +477,19 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   double wday_label_font_size() const;
   void set_wday_label_font_size(double value);
 
-  // optional bool month_label_uppercase = 19 [default = false];
-  bool has_month_label_uppercase() const;
-  void clear_month_label_uppercase();
-  static const int kMonthLabelUppercaseFieldNumber = 19;
-  bool month_label_uppercase() const;
-  void set_month_label_uppercase(bool value);
+  // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
+  bool has_duration_type() const;
+  void clear_duration_type();
+  static const int kDurationTypeFieldNumber = 23;
+  ::config::DurationType duration_type() const;
+  void set_duration_type(::config::DurationType value);
+
+  // optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+  bool has_coverage_type() const;
+  void clear_coverage_type();
+  static const int kCoverageTypeFieldNumber = 22;
+  ::config::CoverageType coverage_type() const;
+  void set_coverage_type(::config::CoverageType value);
 
   // @@protoc_insertion_point(class_scope:config.CalendarConfig)
  private:
@@ -446,8 +511,10 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   void clear_has_paper_type();
   void set_has_language();
   void clear_has_language();
-  void set_has_plan_type();
-  void clear_has_plan_type();
+  void set_has_coverage_type();
+  void clear_has_coverage_type();
+  void set_has_duration_type();
+  void clear_has_duration_type();
   void set_has_output_file_name();
   void clear_has_output_file_name();
   void set_has_default_font_family();
@@ -474,6 +541,7 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  ::google::protobuf::RepeatedField<int> days_to_rest_;
   public:
   static ::google::protobuf::internal::ExplicitlyConstructed< ::std::string> _i_give_permission_to_break_this_code_default_output_file_name_;
   private:
@@ -491,13 +559,14 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   double line_width_;
   int output_type_;
   int paper_type_;
-  int language_;
-  int plan_type_;
   double day_number_font_size_;
+  int language_;
+  bool month_label_uppercase_;
   double day_plan_font_size_;
   double month_label_font_size_;
   double wday_label_font_size_;
-  bool month_label_uppercase_;
+  int duration_type_;
+  int coverage_type_;
   friend struct ::protobuf_config_2eproto::TableStruct;
 };
 // ===================================================================
@@ -707,13 +776,13 @@ inline void CalendarConfig::set_paper_type(::config::PaperType value) {
 
 // optional .config.Language language = 9 [default = ENGLISH];
 inline bool CalendarConfig::has_language() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
+  return (_has_bits_[0] & 0x00008000u) != 0;
 }
 inline void CalendarConfig::set_has_language() {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00008000u;
 }
 inline void CalendarConfig::clear_has_language() {
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline void CalendarConfig::clear_language() {
   language_ = 0;
@@ -730,29 +799,86 @@ inline void CalendarConfig::set_language(::config::Language value) {
   // @@protoc_insertion_point(field_set:config.CalendarConfig.language)
 }
 
-// optional .config.PlanType plan_type = 10 [default = ONE_YEAR];
-inline bool CalendarConfig::has_plan_type() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
+// optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+inline bool CalendarConfig::has_coverage_type() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
 }
-inline void CalendarConfig::set_has_plan_type() {
-  _has_bits_[0] |= 0x00008000u;
+inline void CalendarConfig::set_has_coverage_type() {
+  _has_bits_[0] |= 0x00200000u;
 }
-inline void CalendarConfig::clear_has_plan_type() {
-  _has_bits_[0] &= ~0x00008000u;
+inline void CalendarConfig::clear_has_coverage_type() {
+  _has_bits_[0] &= ~0x00200000u;
 }
-inline void CalendarConfig::clear_plan_type() {
-  plan_type_ = 0;
-  clear_has_plan_type();
+inline void CalendarConfig::clear_coverage_type() {
+  coverage_type_ = 3;
+  clear_has_coverage_type();
 }
-inline ::config::PlanType CalendarConfig::plan_type() const {
-  // @@protoc_insertion_point(field_get:config.CalendarConfig.plan_type)
-  return static_cast< ::config::PlanType >(plan_type_);
+inline ::config::CoverageType CalendarConfig::coverage_type() const {
+  // @@protoc_insertion_point(field_get:config.CalendarConfig.coverage_type)
+  return static_cast< ::config::CoverageType >(coverage_type_);
 }
-inline void CalendarConfig::set_plan_type(::config::PlanType value) {
-  assert(::config::PlanType_IsValid(value));
-  set_has_plan_type();
-  plan_type_ = value;
-  // @@protoc_insertion_point(field_set:config.CalendarConfig.plan_type)
+inline void CalendarConfig::set_coverage_type(::config::CoverageType value) {
+  assert(::config::CoverageType_IsValid(value));
+  set_has_coverage_type();
+  coverage_type_ = value;
+  // @@protoc_insertion_point(field_set:config.CalendarConfig.coverage_type)
+}
+
+// optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
+inline bool CalendarConfig::has_duration_type() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void CalendarConfig::set_has_duration_type() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void CalendarConfig::clear_has_duration_type() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void CalendarConfig::clear_duration_type() {
+  duration_type_ = 0;
+  clear_has_duration_type();
+}
+inline ::config::DurationType CalendarConfig::duration_type() const {
+  // @@protoc_insertion_point(field_get:config.CalendarConfig.duration_type)
+  return static_cast< ::config::DurationType >(duration_type_);
+}
+inline void CalendarConfig::set_duration_type(::config::DurationType value) {
+  assert(::config::DurationType_IsValid(value));
+  set_has_duration_type();
+  duration_type_ = value;
+  // @@protoc_insertion_point(field_set:config.CalendarConfig.duration_type)
+}
+
+// repeated .config.DayOfTheWeek days_to_rest = 24;
+inline int CalendarConfig::days_to_rest_size() const {
+  return days_to_rest_.size();
+}
+inline void CalendarConfig::clear_days_to_rest() {
+  days_to_rest_.Clear();
+}
+inline ::config::DayOfTheWeek CalendarConfig::days_to_rest(int index) const {
+  // @@protoc_insertion_point(field_get:config.CalendarConfig.days_to_rest)
+  return static_cast< ::config::DayOfTheWeek >(days_to_rest_.Get(index));
+}
+inline void CalendarConfig::set_days_to_rest(int index, ::config::DayOfTheWeek value) {
+  assert(::config::DayOfTheWeek_IsValid(value));
+  days_to_rest_.Set(index, value);
+  // @@protoc_insertion_point(field_set:config.CalendarConfig.days_to_rest)
+}
+inline void CalendarConfig::add_days_to_rest(::config::DayOfTheWeek value) {
+  assert(::config::DayOfTheWeek_IsValid(value));
+  days_to_rest_.Add(value);
+  // @@protoc_insertion_point(field_add:config.CalendarConfig.days_to_rest)
+}
+inline const ::google::protobuf::RepeatedField<int>&
+CalendarConfig::days_to_rest() const {
+  // @@protoc_insertion_point(field_list:config.CalendarConfig.days_to_rest)
+  return days_to_rest_;
+}
+inline ::google::protobuf::RepeatedField<int>*
+CalendarConfig::mutable_days_to_rest() {
+  // @@protoc_insertion_point(field_mutable_list:config.CalendarConfig.days_to_rest)
+  return &days_to_rest_;
 }
 
 // optional string output_file_name = 11 [default = "output"];
@@ -955,13 +1081,13 @@ inline void CalendarConfig::set_allocated_day_number_font_family(::std::string* 
 
 // optional double day_number_font_size = 14;
 inline bool CalendarConfig::has_day_number_font_size() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void CalendarConfig::set_has_day_number_font_size() {
-  _has_bits_[0] |= 0x00010000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void CalendarConfig::clear_has_day_number_font_size() {
-  _has_bits_[0] &= ~0x00010000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void CalendarConfig::clear_day_number_font_size() {
   day_number_font_size_ = 0;
@@ -1159,13 +1285,13 @@ inline void CalendarConfig::set_month_label_font_size(double value) {
 
 // optional bool month_label_uppercase = 19 [default = false];
 inline bool CalendarConfig::has_month_label_uppercase() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
+  return (_has_bits_[0] & 0x00010000u) != 0;
 }
 inline void CalendarConfig::set_has_month_label_uppercase() {
-  _has_bits_[0] |= 0x00100000u;
+  _has_bits_[0] |= 0x00010000u;
 }
 inline void CalendarConfig::clear_has_month_label_uppercase() {
-  _has_bits_[0] &= ~0x00100000u;
+  _has_bits_[0] &= ~0x00010000u;
 }
 inline void CalendarConfig::clear_month_label_uppercase() {
   month_label_uppercase_ = false;
@@ -1297,10 +1423,20 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::config::Language>() {
   return ::config::Language_descriptor();
 }
-template <> struct is_proto_enum< ::config::PlanType> : ::std::true_type {};
+template <> struct is_proto_enum< ::config::CoverageType> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::config::PlanType>() {
-  return ::config::PlanType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::config::CoverageType>() {
+  return ::config::CoverageType_descriptor();
+}
+template <> struct is_proto_enum< ::config::DurationType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::config::DurationType>() {
+  return ::config::DurationType_descriptor();
+}
+template <> struct is_proto_enum< ::config::DayOfTheWeek> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::config::DayOfTheWeek>() {
+  return ::config::DayOfTheWeek_descriptor();
 }
 
 }  // namespace protobuf

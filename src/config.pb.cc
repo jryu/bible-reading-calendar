@@ -50,7 +50,7 @@ void InitDefaults() {
 }
 
 ::google::protobuf::Metadata file_level_metadata[1];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[4];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[6];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, _has_bits_),
@@ -67,7 +67,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, output_type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, paper_type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, language_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, plan_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, coverage_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, duration_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, days_to_rest_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, output_file_name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, default_font_family_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::config::CalendarConfig, day_number_font_family_),
@@ -87,22 +89,24 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   11,
   12,
   13,
-  14,
   15,
+  21,
+  20,
+  ~0u,
   0,
   1,
   2,
-  16,
+  14,
   3,
   17,
   4,
   18,
-  20,
+  16,
   5,
   19,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 26, sizeof(::config::CalendarConfig)},
+  { 0, 28, sizeof(::config::CalendarConfig)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -130,31 +134,41 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\014config.proto\022\006config\"\226\005\n\016CalendarConfi"
+      "\n\014config.proto\022\006config\"\204\006\n\016CalendarConfi"
       "g\022\014\n\004year\030\001 \001(\005\022\r\n\005month\030\002 \001(\005\022\022\n\ncell_w"
       "idth\030\003 \001(\001\022\023\n\013cell_height\030\004 \001(\001\022\023\n\013cell_"
       "margin\030\005 \001(\001\022\022\n\nline_width\030\006 \001(\001\022,\n\013outp"
       "ut_type\030\007 \001(\0162\022.config.OutputType:\003SVG\0220"
       "\n\npaper_type\030\010 \001(\0162\021.config.PaperType:\tU"
       "S_LETTER\022+\n\010language\030\t \001(\0162\020.config.Lang"
-      "uage:\007ENGLISH\022-\n\tplan_type\030\n \001(\0162\020.confi"
-      "g.PlanType:\010ONE_YEAR\022 \n\020output_file_name"
-      "\030\013 \001(\t:\006output\022\033\n\023default_font_family\030\014 "
-      "\001(\t\022\036\n\026day_number_font_family\030\r \001(\t\022\034\n\024d"
-      "ay_number_font_size\030\016 \001(\001\022\034\n\024day_plan_fo"
-      "nt_family\030\017 \001(\t\022\032\n\022day_plan_font_size\030\020 "
-      "\001(\001\022\037\n\027month_label_font_family\030\021 \001(\t\022\035\n\025"
-      "month_label_font_size\030\022 \001(\001\022$\n\025month_lab"
-      "el_uppercase\030\023 \001(\010:\005false\022\036\n\026wday_label_"
-      "font_family\030\024 \001(\t\022\034\n\024wday_label_font_siz"
-      "e\030\025 \001(\001*\'\n\nOutputType\022\007\n\003SVG\020\000\022\007\n\003PDF\020\001\022"
-      "\007\n\003PNG\020\002*\"\n\tPaperType\022\r\n\tUS_LETTER\020\000\022\006\n\002"
-      "A4\020\001*#\n\010Language\022\013\n\007ENGLISH\020\000\022\n\n\006KOREAN\020"
-      "\001*6\n\010PlanType\022\014\n\010ONE_YEAR\020\000\022\034\n\030NEW_TESTA"
-      "MENT_AND_PSALMS\020\001"
+      "uage:\007ENGLISH\0228\n\rcoverage_type\030\026 \001(\0162\024.c"
+      "onfig.CoverageType:\013WHOLE_BIBLE\0225\n\rdurat"
+      "ion_type\030\027 \001(\0162\024.config.DurationType:\010ON"
+      "E_YEAR\022*\n\014days_to_rest\030\030 \003(\0162\024.config.Da"
+      "yOfTheWeek\022 \n\020output_file_name\030\013 \001(\t:\006ou"
+      "tput\022\033\n\023default_font_family\030\014 \001(\t\022\036\n\026day"
+      "_number_font_family\030\r \001(\t\022\034\n\024day_number_"
+      "font_size\030\016 \001(\001\022\034\n\024day_plan_font_family\030"
+      "\017 \001(\t\022\032\n\022day_plan_font_size\030\020 \001(\001\022\037\n\027mon"
+      "th_label_font_family\030\021 \001(\t\022\035\n\025month_labe"
+      "l_font_size\030\022 \001(\001\022$\n\025month_label_upperca"
+      "se\030\023 \001(\010:\005false\022\036\n\026wday_label_font_famil"
+      "y\030\024 \001(\t\022\034\n\024wday_label_font_size\030\025 \001(\001*\'\n"
+      "\nOutputType\022\007\n\003SVG\020\000\022\007\n\003PDF\020\001\022\007\n\003PNG\020\002*\""
+      "\n\tPaperType\022\r\n\tUS_LETTER\020\000\022\006\n\002A4\020\001*#\n\010La"
+      "nguage\022\013\n\007ENGLISH\020\000\022\n\n\006KOREAN\020\001*\245\001\n\014Cove"
+      "rageType\022\021\n\rNEW_TESTAMENT\020\000\022\021\n\rOLD_TESTA"
+      "MENT\020\001\022\034\n\030NEW_TESTAMENT_AND_PSALMS\020\002\022\017\n\013"
+      "WHOLE_BIBLE\020\003\022#\n\037WHOLE_BIBLE_NEW_TESTAME"
+      "NT_FIRST\020\004\022\033\n\027WHOLE_BIBLE_IN_PARALLEL\020\005*"
+      "Q\n\014DurationType\022\014\n\010ONE_YEAR\020\000\022\030\n\024TWO_YEA"
+      "RS_FIRST_YEAR\020\001\022\031\n\025TWO_YEARS_SECOND_YEAR"
+      "\020\002*P\n\014DayOfTheWeek\022\007\n\003SUN\020\000\022\007\n\003MON\020\001\022\010\n\004"
+      "TUES\020\002\022\007\n\003WED\020\003\022\t\n\005THURS\020\004\022\007\n\003FRI\020\005\022\007\n\003S"
+      "AT\020\006"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 857);
+      descriptor, 1244);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "config.proto", &protobuf_RegisterTypes);
 }
@@ -214,14 +228,52 @@ bool Language_IsValid(int value) {
   }
 }
 
-const ::google::protobuf::EnumDescriptor* PlanType_descriptor() {
+const ::google::protobuf::EnumDescriptor* CoverageType_descriptor() {
   protobuf_config_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_config_2eproto::file_level_enum_descriptors[3];
 }
-bool PlanType_IsValid(int value) {
+bool CoverageType_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* DurationType_descriptor() {
+  protobuf_config_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_config_2eproto::file_level_enum_descriptors[4];
+}
+bool DurationType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* DayOfTheWeek_descriptor() {
+  protobuf_config_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_config_2eproto::file_level_enum_descriptors[5];
+}
+bool DayOfTheWeek_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
       return true;
     default:
       return false;
@@ -244,7 +296,9 @@ const int CalendarConfig::kLineWidthFieldNumber;
 const int CalendarConfig::kOutputTypeFieldNumber;
 const int CalendarConfig::kPaperTypeFieldNumber;
 const int CalendarConfig::kLanguageFieldNumber;
-const int CalendarConfig::kPlanTypeFieldNumber;
+const int CalendarConfig::kCoverageTypeFieldNumber;
+const int CalendarConfig::kDurationTypeFieldNumber;
+const int CalendarConfig::kDaysToRestFieldNumber;
 const int CalendarConfig::kOutputFileNameFieldNumber;
 const int CalendarConfig::kDefaultFontFamilyFieldNumber;
 const int CalendarConfig::kDayNumberFontFamilyFieldNumber;
@@ -268,7 +322,8 @@ CalendarConfig::CalendarConfig()
 CalendarConfig::CalendarConfig(const CalendarConfig& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      _has_bits_(from._has_bits_) {
+      _has_bits_(from._has_bits_),
+      days_to_rest_(from.days_to_rest_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   output_file_name_.UnsafeSetDefault(&::config::CalendarConfig::_i_give_permission_to_break_this_code_default_output_file_name_.get());
   if (from.has_output_file_name()) {
@@ -295,8 +350,8 @@ CalendarConfig::CalendarConfig(const CalendarConfig& from)
     wday_label_font_family_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.wday_label_font_family_);
   }
   ::memcpy(&year_, &from.year_,
-    static_cast<size_t>(reinterpret_cast<char*>(&month_label_uppercase_) -
-    reinterpret_cast<char*>(&year_)) + sizeof(month_label_uppercase_));
+    static_cast<size_t>(reinterpret_cast<char*>(&coverage_type_) -
+    reinterpret_cast<char*>(&year_)) + sizeof(coverage_type_));
   // @@protoc_insertion_point(copy_constructor:config.CalendarConfig)
 }
 
@@ -308,8 +363,9 @@ void CalendarConfig::SharedCtor() {
   month_label_font_family_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   wday_label_font_family_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&year_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&month_label_uppercase_) -
-      reinterpret_cast<char*>(&year_)) + sizeof(month_label_uppercase_));
+      reinterpret_cast<char*>(&duration_type_) -
+      reinterpret_cast<char*>(&year_)) + sizeof(duration_type_));
+  coverage_type_ = 3;
 }
 
 CalendarConfig::~CalendarConfig() {
@@ -346,6 +402,7 @@ void CalendarConfig::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  days_to_rest_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 63u) {
     if (cached_has_bits & 0x00000001u) {
@@ -374,13 +431,14 @@ void CalendarConfig::Clear() {
   }
   if (cached_has_bits & 65280u) {
     ::memset(&cell_width_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&plan_type_) -
-        reinterpret_cast<char*>(&cell_width_)) + sizeof(plan_type_));
+        reinterpret_cast<char*>(&language_) -
+        reinterpret_cast<char*>(&cell_width_)) + sizeof(language_));
   }
-  if (cached_has_bits & 2031616u) {
-    ::memset(&day_number_font_size_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&month_label_uppercase_) -
-        reinterpret_cast<char*>(&day_number_font_size_)) + sizeof(month_label_uppercase_));
+  if (cached_has_bits & 4128768u) {
+    ::memset(&month_label_uppercase_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&duration_type_) -
+        reinterpret_cast<char*>(&month_label_uppercase_)) + sizeof(duration_type_));
+    coverage_type_ = 3;
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -533,26 +591,6 @@ bool CalendarConfig::MergePartialFromCodedStream(
           } else {
             mutable_unknown_fields()->AddVarint(
                 9, static_cast< ::google::protobuf::uint64>(value));
-          }
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional .config.PlanType plan_type = 10 [default = ONE_YEAR];
-      case 10: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(80u /* 80 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::config::PlanType_IsValid(value)) {
-            set_plan_type(static_cast< ::config::PlanType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(
-                10, static_cast< ::google::protobuf::uint64>(value));
           }
         } else {
           goto handle_unusual;
@@ -726,6 +764,75 @@ bool CalendarConfig::MergePartialFromCodedStream(
         break;
       }
 
+      // optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+      case 22: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(176u /* 176 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::config::CoverageType_IsValid(value)) {
+            set_coverage_type(static_cast< ::config::CoverageType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(
+                22, static_cast< ::google::protobuf::uint64>(value));
+          }
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
+      case 23: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(184u /* 184 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::config::DurationType_IsValid(value)) {
+            set_duration_type(static_cast< ::config::DurationType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(
+                23, static_cast< ::google::protobuf::uint64>(value));
+          }
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .config.DayOfTheWeek days_to_rest = 24;
+      case 24: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(192u /* 192 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::config::DayOfTheWeek_IsValid(value)) {
+            add_days_to_rest(static_cast< ::config::DayOfTheWeek >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(
+                24, static_cast< ::google::protobuf::uint64>(value));
+          }
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(194u /* 194 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormat::ReadPackedEnumPreserveUnknowns(
+                 input,
+                 24,
+                 ::config::DayOfTheWeek_IsValid,
+                 mutable_unknown_fields(),
+                 this->mutable_days_to_rest())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -796,15 +903,9 @@ void CalendarConfig::SerializeWithCachedSizes(
   }
 
   // optional .config.Language language = 9 [default = ENGLISH];
-  if (cached_has_bits & 0x00004000u) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      9, this->language(), output);
-  }
-
-  // optional .config.PlanType plan_type = 10 [default = ONE_YEAR];
   if (cached_has_bits & 0x00008000u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      10, this->plan_type(), output);
+      9, this->language(), output);
   }
 
   // optional string output_file_name = 11 [default = "output"];
@@ -838,7 +939,7 @@ void CalendarConfig::SerializeWithCachedSizes(
   }
 
   // optional double day_number_font_size = 14;
-  if (cached_has_bits & 0x00010000u) {
+  if (cached_has_bits & 0x00004000u) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(14, this->day_number_font_size(), output);
   }
 
@@ -873,7 +974,7 @@ void CalendarConfig::SerializeWithCachedSizes(
   }
 
   // optional bool month_label_uppercase = 19 [default = false];
-  if (cached_has_bits & 0x00100000u) {
+  if (cached_has_bits & 0x00010000u) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(19, this->month_label_uppercase(), output);
   }
 
@@ -890,6 +991,24 @@ void CalendarConfig::SerializeWithCachedSizes(
   // optional double wday_label_font_size = 21;
   if (cached_has_bits & 0x00080000u) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(21, this->wday_label_font_size(), output);
+  }
+
+  // optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+  if (cached_has_bits & 0x00200000u) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      22, this->coverage_type(), output);
+  }
+
+  // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
+  if (cached_has_bits & 0x00100000u) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      23, this->duration_type(), output);
+  }
+
+  // repeated .config.DayOfTheWeek days_to_rest = 24;
+  for (int i = 0, n = this->days_to_rest_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      24, this->days_to_rest(i), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -950,15 +1069,9 @@ void CalendarConfig::SerializeWithCachedSizes(
   }
 
   // optional .config.Language language = 9 [default = ENGLISH];
-  if (cached_has_bits & 0x00004000u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      9, this->language(), target);
-  }
-
-  // optional .config.PlanType plan_type = 10 [default = ONE_YEAR];
   if (cached_has_bits & 0x00008000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      10, this->plan_type(), target);
+      9, this->language(), target);
   }
 
   // optional string output_file_name = 11 [default = "output"];
@@ -995,7 +1108,7 @@ void CalendarConfig::SerializeWithCachedSizes(
   }
 
   // optional double day_number_font_size = 14;
-  if (cached_has_bits & 0x00010000u) {
+  if (cached_has_bits & 0x00004000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(14, this->day_number_font_size(), target);
   }
 
@@ -1032,7 +1145,7 @@ void CalendarConfig::SerializeWithCachedSizes(
   }
 
   // optional bool month_label_uppercase = 19 [default = false];
-  if (cached_has_bits & 0x00100000u) {
+  if (cached_has_bits & 0x00010000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(19, this->month_label_uppercase(), target);
   }
 
@@ -1052,6 +1165,22 @@ void CalendarConfig::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(21, this->wday_label_font_size(), target);
   }
 
+  // optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+  if (cached_has_bits & 0x00200000u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      22, this->coverage_type(), target);
+  }
+
+  // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
+  if (cached_has_bits & 0x00100000u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      23, this->duration_type(), target);
+  }
+
+  // repeated .config.DayOfTheWeek days_to_rest = 24;
+  target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    24, this->days_to_rest_, target);
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target);
@@ -1069,6 +1198,16 @@ size_t CalendarConfig::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
+  // repeated .config.DayOfTheWeek days_to_rest = 24;
+  {
+    size_t data_size = 0;
+    unsigned int count = static_cast<unsigned int>(this->days_to_rest_size());for (unsigned int i = 0; i < count; i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::EnumSize(
+        this->days_to_rest(static_cast<int>(i)));
+    }
+    total_size += (2UL * count) + data_size;
+  }
+
   if (_has_bits_[0 / 32] & 255u) {
     // optional string output_file_name = 11 [default = "output"];
     if (has_output_file_name()) {
@@ -1160,23 +1299,22 @@ size_t CalendarConfig::ByteSizeLong() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->paper_type());
     }
 
+    // optional double day_number_font_size = 14;
+    if (has_day_number_font_size()) {
+      total_size += 1 + 8;
+    }
+
     // optional .config.Language language = 9 [default = ENGLISH];
     if (has_language()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->language());
     }
 
-    // optional .config.PlanType plan_type = 10 [default = ONE_YEAR];
-    if (has_plan_type()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->plan_type());
-    }
-
   }
-  if (_has_bits_[16 / 32] & 2031616u) {
-    // optional double day_number_font_size = 14;
-    if (has_day_number_font_size()) {
-      total_size += 1 + 8;
+  if (_has_bits_[16 / 32] & 4128768u) {
+    // optional bool month_label_uppercase = 19 [default = false];
+    if (has_month_label_uppercase()) {
+      total_size += 2 + 1;
     }
 
     // optional double day_plan_font_size = 16;
@@ -1194,9 +1332,16 @@ size_t CalendarConfig::ByteSizeLong() const {
       total_size += 2 + 8;
     }
 
-    // optional bool month_label_uppercase = 19 [default = false];
-    if (has_month_label_uppercase()) {
-      total_size += 2 + 1;
+    // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
+    if (has_duration_type()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->duration_type());
+    }
+
+    // optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
+    if (has_coverage_type()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->coverage_type());
     }
 
   }
@@ -1227,6 +1372,7 @@ void CalendarConfig::MergeFrom(const CalendarConfig& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  days_to_rest_.MergeFrom(from.days_to_rest_);
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 255u) {
     if (cached_has_bits & 0x00000001u) {
@@ -1281,16 +1427,16 @@ void CalendarConfig::MergeFrom(const CalendarConfig& from) {
       paper_type_ = from.paper_type_;
     }
     if (cached_has_bits & 0x00004000u) {
-      language_ = from.language_;
+      day_number_font_size_ = from.day_number_font_size_;
     }
     if (cached_has_bits & 0x00008000u) {
-      plan_type_ = from.plan_type_;
+      language_ = from.language_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
-  if (cached_has_bits & 2031616u) {
+  if (cached_has_bits & 4128768u) {
     if (cached_has_bits & 0x00010000u) {
-      day_number_font_size_ = from.day_number_font_size_;
+      month_label_uppercase_ = from.month_label_uppercase_;
     }
     if (cached_has_bits & 0x00020000u) {
       day_plan_font_size_ = from.day_plan_font_size_;
@@ -1302,7 +1448,10 @@ void CalendarConfig::MergeFrom(const CalendarConfig& from) {
       wday_label_font_size_ = from.wday_label_font_size_;
     }
     if (cached_has_bits & 0x00100000u) {
-      month_label_uppercase_ = from.month_label_uppercase_;
+      duration_type_ = from.duration_type_;
+    }
+    if (cached_has_bits & 0x00200000u) {
+      coverage_type_ = from.coverage_type_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -1332,6 +1481,7 @@ void CalendarConfig::Swap(CalendarConfig* other) {
 }
 void CalendarConfig::InternalSwap(CalendarConfig* other) {
   using std::swap;
+  days_to_rest_.InternalSwap(&other->days_to_rest_);
   output_file_name_.Swap(&other->output_file_name_, &::config::CalendarConfig::_i_give_permission_to_break_this_code_default_output_file_name_.get(),
     GetArenaNoVirtual());
   default_font_family_.Swap(&other->default_font_family_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
@@ -1352,13 +1502,14 @@ void CalendarConfig::InternalSwap(CalendarConfig* other) {
   swap(line_width_, other->line_width_);
   swap(output_type_, other->output_type_);
   swap(paper_type_, other->paper_type_);
-  swap(language_, other->language_);
-  swap(plan_type_, other->plan_type_);
   swap(day_number_font_size_, other->day_number_font_size_);
+  swap(language_, other->language_);
+  swap(month_label_uppercase_, other->month_label_uppercase_);
   swap(day_plan_font_size_, other->day_plan_font_size_);
   swap(month_label_font_size_, other->month_label_font_size_);
   swap(wday_label_font_size_, other->wday_label_font_size_);
-  swap(month_label_uppercase_, other->month_label_uppercase_);
+  swap(duration_type_, other->duration_type_);
+  swap(coverage_type_, other->coverage_type_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

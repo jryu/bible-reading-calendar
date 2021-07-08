@@ -80,6 +80,7 @@ Makefile
 
 # Debug files
 *.dSYM/
+core
 
 .deps
 
