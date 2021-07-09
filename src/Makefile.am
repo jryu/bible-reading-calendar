@@ -4,7 +4,7 @@
 dist_noinst_DATA = config.proto
 BUILT_SOURCES = config.pb.cc
 
-noinst_PROGRAMS = bible_reading_calendar
-bible_reading_calendar_SOURCES = main.cpp config.pb.cc config.pb.h
-bible_reading_calendar_CPPFLAGS = $(CAIRO_CFLAGS) $(LIBRSVG2_CFLAGS)
-bible_reading_calendar_LDADD = $(CAIRO_LIBS) $(PROTOBUF_LIBS) $(LIBRSVG2_LIBS)
+noinst_PROGRAMS = cli
+cli_SOURCES = main_cli.cpp config.pb.cc config.pb.h calendar.h calendar.cpp
+cli_CPPFLAGS = $(CAIRO_CFLAGS) $(LIBRSVG2_CFLAGS)
+cli_LDADD = $(CAIRO_LIBS) $(PROTOBUF_LIBS) $(LIBRSVG2_LIBS)
