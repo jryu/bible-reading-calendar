@@ -8,8 +8,8 @@ message CalendarConfig {
 
 	optional double cell_width = 3;
 	optional double cell_height = 4;
-	optional double cell_margin = 5;
-	optional double line_width = 6;
+	optional double cell_margin = 5 [default = 10];
+	optional double line_width = 6 [default = 1];
 
 	optional OutputType output_type = 7 [default = SVG];
 	optional PaperType paper_type = 8 [default = US_LETTER];
@@ -24,17 +24,17 @@ message CalendarConfig {
 	optional string default_font_family = 12;
 
 	optional string day_number_font_family = 13;
-	optional double day_number_font_size = 14;
+	optional double day_number_font_size = 14 [default = 30];
 
 	optional string day_plan_font_family = 15;
-	optional double day_plan_font_size = 16;
+	optional double day_plan_font_size = 16 [default = 20];
 
 	optional string month_label_font_family = 17;
 	optional double month_label_font_size = 18;
 	optional bool month_label_uppercase = 19 [default = false];
 
 	optional string wday_label_font_family = 20;
-	optional double wday_label_font_size = 21;
+	optional double wday_label_font_size = 21 [default = 16];
 }
 
 enum OutputType {

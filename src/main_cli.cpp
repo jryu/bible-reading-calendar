@@ -1,6 +1,7 @@
 #include <cairo.h>
 #include <fcntl.h>
 #include <fstream>
+#include <gflags/gflags.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 #include <iomanip>
@@ -28,7 +29,7 @@ bool parse_config(config::CalendarConfig *conf) {
     return false;
   }
   google::protobuf::io::FileInputStream fileInput(fd);
-  fileInput.SetCloseOnDelete( true );
+  fileInput.SetCloseOnDelete(true);
 
   if (!google::protobuf::TextFormat::Parse(&fileInput, conf)) {
     // protobuf prints error message
@@ -66,6 +67,8 @@ void list_fonts()
 
 int main(int argc, char *argv[])
 {
+  gflags::ParseCommandLineFlags(&argc, &argv, true);
+
   config::CalendarConfig conf;
   if (!parse_config(&conf)) {
     console->error("Config parsing error");

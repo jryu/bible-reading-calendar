@@ -3,6 +3,7 @@
 #include <cairo-svg.h>
 #include <fcntl.h>
 #include <fstream>
+#include <gflags/gflags.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 #include <iomanip>
@@ -21,6 +22,9 @@
 #include "config.pb.h"
 
 #define SECS_PER_DAY (60 * 60 * 24)
+
+DEFINE_string(bible_reading_plans_path, "",
+    "A path to bible reading plans directory.");
 
 namespace {
 
@@ -103,10 +107,25 @@ int count_weeks(int year, int month)
 
 } // namespace
 
+std::shared_ptr<spdlog::logger> Calendar::logger_ =
+  spdlog::stdout_color_mt("calendar");
+
 Calendar::Calendar(config::CalendarConfig conf) :
-  conf_(std::move(conf)),
-  logger_(spdlog::stdout_color_mt("calendar"))
+  conf_(std::move(conf))
 {
+  switch (conf_.paper_type()) {
+    case config::PaperType::US_LETTER:
+      surface_width_ = 1100;
+      surface_height_ = 850;
+      break;
+    case config::PaperType::A4:
+      surface_width_ = 1175;
+      surface_height_ = 825;
+      break;
+  }
+  conf_.set_cell_width(((double)
+        surface_width_ - conf_.cell_margin() * 2) / 7);
+
   std::map<std::string, Book> ko_books = {
     {"Genesis", {"창", "창세기"}},
     {"Exodus", {"출", "출애굽기"}},
@@ -279,18 +298,26 @@ std::string Calendar::getPlanFileName()
 {
   std::vector<std::string> file_name_tokens;
   switch (conf_.coverage_type()) {
-    case config::CoverageType::WHOLE_BIBLE:
-      file_name_tokens.push_back("whole-bible");
-      break;
-    case config::CoverageType::WHOLE_BIBLE_IN_PARALLEL:
-      file_name_tokens.push_back("whole-bible-in-parallel");
-      break;
     case config::CoverageType::NEW_TESTAMENT:
       file_name_tokens.push_back("new-testament");
+      break;
+    case config::CoverageType::OLD_TESTAMENT:
+      file_name_tokens.push_back("old-testament");
       break;
     case config::CoverageType::NEW_TESTAMENT_AND_PSALMS:
       file_name_tokens.push_back("new-testament-and-psalms");
       break;
+    case config::CoverageType::WHOLE_BIBLE:
+      file_name_tokens.push_back("whole-bible");
+      break;
+    case config::CoverageType::WHOLE_BIBLE_NEW_TESTAMENT_FIRST:
+      file_name_tokens.push_back("whole-bible-new-testament-first");
+      break;
+    case config::CoverageType::WHOLE_BIBLE_IN_PARALLEL:
+      file_name_tokens.push_back("whole-bible-in-parallel");
+      break;
+    default:
+      logger_->error("Unknown CoverageType: {}", conf_.coverage_type());
   }
 
   switch (conf_.duration_type()) {
@@ -305,7 +332,8 @@ std::string Calendar::getPlanFileName()
       break;
   };
   file_name_tokens.push_back(std::to_string(countDays(conf_.year())));
-  return "bible-reading-plans/" + join(file_name_tokens, "_") + ".csv";
+  return FLAGS_bible_reading_plans_path +
+    join(file_name_tokens, "_") + ".csv";
 }
 
 std::queue<std::string> Calendar::getBibleReadingPlan()
@@ -362,7 +390,7 @@ double Calendar::getDayY(int y_index)
   return y_index * conf_.cell_height() + y_offset_;
 }
 
-void Calendar::drawMonthLabel(int month, int surface_width) {
+void Calendar::drawMonthLabel(int month) {
   static std::vector<std::string> month_text = {
     "January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"};
@@ -387,7 +415,7 @@ void Calendar::drawMonthLabel(int month, int surface_width) {
   int width, height;
   pango_layout_get_size(layout, &width, &height);
   cairo_move_to(cr_,
-      (surface_width - ((double) width / PANGO_SCALE)) / 2,
+      (surface_width_ - ((double) width / PANGO_SCALE)) / 2,
       conf_.cell_margin());
   y_offset_ += (double) height / PANGO_SCALE + conf_.cell_margin() * 2;
   logger_->debug("y_offset_: {}" , y_offset_);
@@ -516,22 +544,6 @@ void Calendar::drawTextOfDayPlan(int x, int y,
 void Calendar::drawMonth(int year, int month,
     std::queue<std::string>* bible_reading_plan)
 {
-  y_offset_ = 0;
-
-  int surface_width;
-  int surface_height;
-  switch (conf_.paper_type()) {
-    case config::PaperType::US_LETTER:
-      surface_width = 1100;
-      surface_height = 850;
-      break;
-    case config::PaperType::A4:
-      surface_width = 1175;
-      surface_height = 825;
-      break;
-  }
-  conf_.set_cell_width(((double) surface_width - conf_.cell_margin() * 2) / 7);
-
   std::string output_file_name = conf_.output_file_name() + '_' +
     std::to_string(month);
 
@@ -540,49 +552,65 @@ void Calendar::drawMonth(int year, int month,
     case config::OutputType::PDF:
       surface = cairo_pdf_surface_create(
           (output_file_name + ".pdf").c_str(),
-          surface_width, surface_height);
+          surface_width_, surface_height_);
       break;
     case config::OutputType::PNG:
       surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-          surface_width, surface_height);
+          surface_width_, surface_height_);
       break;
     default:
       surface = cairo_svg_surface_create(
           (output_file_name + ".svg").c_str(),
-          surface_width, surface_height);
+          surface_width_, surface_height_);
       break;
   }
+
+  drawMonthOnSurface(year, month, bible_reading_plan, surface);
+
+  if (conf_.output_type() == config::OutputType::PNG) {
+    cairo_surface_write_to_png(surface,
+        (output_file_name + ".png").c_str());
+  }
+
+  cairo_surface_destroy(surface);
+}
+
+void Calendar::drawMonthOnSurface(int year, int month,
+    std::queue<std::string>* bible_reading_plan,
+    cairo_surface_t* surface)
+{
+  y_offset_ = 0;
   cr_ = cairo_create(surface);
 
-  drawMonthLabel(month, surface_width);
+  drawMonthLabel(month);
 
   // Draw frame
   cairo_set_line_width(cr_, conf_.line_width());
 
   cairo_rectangle(cr_, conf_.cell_margin(), y_offset_,
-      surface_width - conf_.cell_margin() * 2,
-      surface_height - y_offset_ - conf_.cell_margin());
+      surface_width_ - conf_.cell_margin() * 2,
+      surface_height_ - y_offset_ - conf_.cell_margin());
 
   for (int x = 1; x < 7; ++x) {
     cairo_move_to(cr_, getDayX(x), y_offset_);
-    cairo_line_to(cr_, getDayX(x), surface_height - conf_.cell_margin());
+    cairo_line_to(cr_, getDayX(x), surface_height_ - conf_.cell_margin());
   }
 
   drawWdayLabel();
 
   // Stroke a line below the labels
   cairo_move_to(cr_, conf_.cell_margin(), y_offset_);
-  cairo_line_to(cr_, surface_width - conf_.cell_margin(), y_offset_);
+  cairo_line_to(cr_, surface_width_ - conf_.cell_margin(), y_offset_);
 
   // Horizontal lines below dates
   conf_.set_cell_height(
-      ((double) surface_height - conf_.cell_margin() - y_offset_) /
+      ((double) surface_height_ - conf_.cell_margin() - y_offset_) /
       count_weeks(year, month));
 
   for (int y = 1; y < count_weeks(year, month); ++y) {
     cairo_move_to(cr_, conf_.cell_margin(),
         y_offset_ + y * conf_.cell_height());
-    cairo_line_to(cr_, surface_width - conf_.cell_margin(),
+    cairo_line_to(cr_, surface_width_ - conf_.cell_margin(),
         y_offset_ + y * conf_.cell_height());
   }
 
@@ -590,13 +618,7 @@ void Calendar::drawMonth(int year, int month,
 
   drawDaysOfMonth(year, month, bible_reading_plan);
 
-  if (conf_.output_type() == config::OutputType::PNG) {
-    cairo_surface_write_to_png(surface,
-        (output_file_name + ".png").c_str());
-  }
-
   cairo_destroy(cr_);
-  cairo_surface_destroy(surface);
 }
 
 void Calendar::draw()
@@ -614,5 +636,21 @@ void Calendar::draw()
       drawMonth(conf_.year(), i, &bible_reading_plan);
     }
   }
+}
 
+void Calendar::streamSvg(cairo_write_func_t writeFunc, void *closure)
+{
+  cairo_surface_t* surface =
+    cairo_svg_surface_create_for_stream(writeFunc, closure,
+        surface_width_, surface_height_);
+
+  std::queue<std::string> bible_reading_plan =
+    getBibleReadingPlan();
+
+  for (int i = 1; i < conf_.month(); ++i) {
+    skipMonth(conf_.year(), i, &bible_reading_plan);
+  }
+  drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
+
+  cairo_surface_destroy(surface);
 }
