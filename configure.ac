@@ -2,7 +2,7 @@ AC_PREREQ([2.69])
 AC_INIT([bible-reading-calendar], [0.1])
 AM_INIT_AUTOMAKE([foreign])
 
-AC_CONFIG_SRCDIR([src/main.cpp])
+AC_CONFIG_SRCDIR([src/main_cli.cpp])
 
 AC_PROG_CXX
 AC_PROG_RANLIB

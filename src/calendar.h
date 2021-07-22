@@ -28,6 +28,7 @@ class Calendar {
   public:
     Calendar(config::CalendarConfig conf);
     void draw();
+    void streamSvg(cairo_write_func_t writeFunc, void *closure);
 
   private:
     std::string getBookName(const std::string& book_id);
@@ -43,7 +44,7 @@ class Calendar {
     double getDayX(int x_index);
     double getDayY(int y_index);
 
-    void drawMonthLabel(int month, int surface_width);
+    void drawMonthLabel(int month);
 
     void drawWdayLabel();
 
@@ -62,11 +63,18 @@ class Calendar {
     void drawMonth(int year, int month,
         std::queue<std::string>* bible_reading_plan);
 
-    std::shared_ptr<spdlog::logger> logger_;
+    void drawMonthOnSurface(int year, int month,
+        std::queue<std::string>* bible_reading_plan,
+        cairo_surface_t* surface);
+
+    static std::shared_ptr<spdlog::logger> logger_;
+
     std::map<config::Language, std::map<std::string, Book>> books_;
 
     config::CalendarConfig conf_;
 
-    double y_offset_;
     cairo_t *cr_;
+    double y_offset_;
+    int surface_width_;
+    int surface_height_;
 };

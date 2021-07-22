@@ -407,20 +407,6 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   double cell_height() const;
   void set_cell_height(double value);
 
-  // optional double cell_margin = 5;
-  bool has_cell_margin() const;
-  void clear_cell_margin();
-  static const int kCellMarginFieldNumber = 5;
-  double cell_margin() const;
-  void set_cell_margin(double value);
-
-  // optional double line_width = 6;
-  bool has_line_width() const;
-  void clear_line_width();
-  static const int kLineWidthFieldNumber = 6;
-  double line_width() const;
-  void set_line_width(double value);
-
   // optional .config.OutputType output_type = 7 [default = SVG];
   bool has_output_type() const;
   void clear_output_type();
@@ -434,13 +420,6 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   static const int kPaperTypeFieldNumber = 8;
   ::config::PaperType paper_type() const;
   void set_paper_type(::config::PaperType value);
-
-  // optional double day_number_font_size = 14;
-  bool has_day_number_font_size() const;
-  void clear_day_number_font_size();
-  static const int kDayNumberFontSizeFieldNumber = 14;
-  double day_number_font_size() const;
-  void set_day_number_font_size(double value);
 
   // optional .config.Language language = 9 [default = ENGLISH];
   bool has_language() const;
@@ -456,26 +435,12 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   bool month_label_uppercase() const;
   void set_month_label_uppercase(bool value);
 
-  // optional double day_plan_font_size = 16;
-  bool has_day_plan_font_size() const;
-  void clear_day_plan_font_size();
-  static const int kDayPlanFontSizeFieldNumber = 16;
-  double day_plan_font_size() const;
-  void set_day_plan_font_size(double value);
-
   // optional double month_label_font_size = 18;
   bool has_month_label_font_size() const;
   void clear_month_label_font_size();
   static const int kMonthLabelFontSizeFieldNumber = 18;
   double month_label_font_size() const;
   void set_month_label_font_size(double value);
-
-  // optional double wday_label_font_size = 21;
-  bool has_wday_label_font_size() const;
-  void clear_wday_label_font_size();
-  static const int kWdayLabelFontSizeFieldNumber = 21;
-  double wday_label_font_size() const;
-  void set_wday_label_font_size(double value);
 
   // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
   bool has_duration_type() const;
@@ -490,6 +455,41 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   static const int kCoverageTypeFieldNumber = 22;
   ::config::CoverageType coverage_type() const;
   void set_coverage_type(::config::CoverageType value);
+
+  // optional double cell_margin = 5 [default = 10];
+  bool has_cell_margin() const;
+  void clear_cell_margin();
+  static const int kCellMarginFieldNumber = 5;
+  double cell_margin() const;
+  void set_cell_margin(double value);
+
+  // optional double line_width = 6 [default = 1];
+  bool has_line_width() const;
+  void clear_line_width();
+  static const int kLineWidthFieldNumber = 6;
+  double line_width() const;
+  void set_line_width(double value);
+
+  // optional double day_number_font_size = 14 [default = 30];
+  bool has_day_number_font_size() const;
+  void clear_day_number_font_size();
+  static const int kDayNumberFontSizeFieldNumber = 14;
+  double day_number_font_size() const;
+  void set_day_number_font_size(double value);
+
+  // optional double day_plan_font_size = 16 [default = 20];
+  bool has_day_plan_font_size() const;
+  void clear_day_plan_font_size();
+  static const int kDayPlanFontSizeFieldNumber = 16;
+  double day_plan_font_size() const;
+  void set_day_plan_font_size(double value);
+
+  // optional double wday_label_font_size = 21 [default = 16];
+  bool has_wday_label_font_size() const;
+  void clear_wday_label_font_size();
+  static const int kWdayLabelFontSizeFieldNumber = 21;
+  double wday_label_font_size() const;
+  void set_wday_label_font_size(double value);
 
   // @@protoc_insertion_point(class_scope:config.CalendarConfig)
  private:
@@ -555,18 +555,18 @@ class CalendarConfig : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 month_;
   double cell_width_;
   double cell_height_;
-  double cell_margin_;
-  double line_width_;
   int output_type_;
   int paper_type_;
-  double day_number_font_size_;
   int language_;
   bool month_label_uppercase_;
-  double day_plan_font_size_;
   double month_label_font_size_;
-  double wday_label_font_size_;
   int duration_type_;
   int coverage_type_;
+  double cell_margin_;
+  double line_width_;
+  double day_number_font_size_;
+  double day_plan_font_size_;
+  double wday_label_font_size_;
   friend struct ::protobuf_config_2eproto::TableStruct;
 };
 // ===================================================================
@@ -676,18 +676,18 @@ inline void CalendarConfig::set_cell_height(double value) {
   // @@protoc_insertion_point(field_set:config.CalendarConfig.cell_height)
 }
 
-// optional double cell_margin = 5;
+// optional double cell_margin = 5 [default = 10];
 inline bool CalendarConfig::has_cell_margin() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00020000u) != 0;
 }
 inline void CalendarConfig::set_has_cell_margin() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00020000u;
 }
 inline void CalendarConfig::clear_has_cell_margin() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00020000u;
 }
 inline void CalendarConfig::clear_cell_margin() {
-  cell_margin_ = 0;
+  cell_margin_ = 10;
   clear_has_cell_margin();
 }
 inline double CalendarConfig::cell_margin() const {
@@ -700,18 +700,18 @@ inline void CalendarConfig::set_cell_margin(double value) {
   // @@protoc_insertion_point(field_set:config.CalendarConfig.cell_margin)
 }
 
-// optional double line_width = 6;
+// optional double line_width = 6 [default = 1];
 inline bool CalendarConfig::has_line_width() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00040000u) != 0;
 }
 inline void CalendarConfig::set_has_line_width() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00040000u;
 }
 inline void CalendarConfig::clear_has_line_width() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00040000u;
 }
 inline void CalendarConfig::clear_line_width() {
-  line_width_ = 0;
+  line_width_ = 1;
   clear_has_line_width();
 }
 inline double CalendarConfig::line_width() const {
@@ -726,13 +726,13 @@ inline void CalendarConfig::set_line_width(double value) {
 
 // optional .config.OutputType output_type = 7 [default = SVG];
 inline bool CalendarConfig::has_output_type() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void CalendarConfig::set_has_output_type() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void CalendarConfig::clear_has_output_type() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void CalendarConfig::clear_output_type() {
   output_type_ = 0;
@@ -751,13 +751,13 @@ inline void CalendarConfig::set_output_type(::config::OutputType value) {
 
 // optional .config.PaperType paper_type = 8 [default = US_LETTER];
 inline bool CalendarConfig::has_paper_type() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void CalendarConfig::set_has_paper_type() {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void CalendarConfig::clear_has_paper_type() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void CalendarConfig::clear_paper_type() {
   paper_type_ = 0;
@@ -776,13 +776,13 @@ inline void CalendarConfig::set_paper_type(::config::PaperType value) {
 
 // optional .config.Language language = 9 [default = ENGLISH];
 inline bool CalendarConfig::has_language() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void CalendarConfig::set_has_language() {
-  _has_bits_[0] |= 0x00008000u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void CalendarConfig::clear_has_language() {
-  _has_bits_[0] &= ~0x00008000u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void CalendarConfig::clear_language() {
   language_ = 0;
@@ -801,13 +801,13 @@ inline void CalendarConfig::set_language(::config::Language value) {
 
 // optional .config.CoverageType coverage_type = 22 [default = WHOLE_BIBLE];
 inline bool CalendarConfig::has_coverage_type() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
+  return (_has_bits_[0] & 0x00010000u) != 0;
 }
 inline void CalendarConfig::set_has_coverage_type() {
-  _has_bits_[0] |= 0x00200000u;
+  _has_bits_[0] |= 0x00010000u;
 }
 inline void CalendarConfig::clear_has_coverage_type() {
-  _has_bits_[0] &= ~0x00200000u;
+  _has_bits_[0] &= ~0x00010000u;
 }
 inline void CalendarConfig::clear_coverage_type() {
   coverage_type_ = 3;
@@ -826,13 +826,13 @@ inline void CalendarConfig::set_coverage_type(::config::CoverageType value) {
 
 // optional .config.DurationType duration_type = 23 [default = ONE_YEAR];
 inline bool CalendarConfig::has_duration_type() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
+  return (_has_bits_[0] & 0x00008000u) != 0;
 }
 inline void CalendarConfig::set_has_duration_type() {
-  _has_bits_[0] |= 0x00100000u;
+  _has_bits_[0] |= 0x00008000u;
 }
 inline void CalendarConfig::clear_has_duration_type() {
-  _has_bits_[0] &= ~0x00100000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline void CalendarConfig::clear_duration_type() {
   duration_type_ = 0;
@@ -1079,18 +1079,18 @@ inline void CalendarConfig::set_allocated_day_number_font_family(::std::string* 
   // @@protoc_insertion_point(field_set_allocated:config.CalendarConfig.day_number_font_family)
 }
 
-// optional double day_number_font_size = 14;
+// optional double day_number_font_size = 14 [default = 30];
 inline bool CalendarConfig::has_day_number_font_size() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
+  return (_has_bits_[0] & 0x00080000u) != 0;
 }
 inline void CalendarConfig::set_has_day_number_font_size() {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00080000u;
 }
 inline void CalendarConfig::clear_has_day_number_font_size() {
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00080000u;
 }
 inline void CalendarConfig::clear_day_number_font_size() {
-  day_number_font_size_ = 0;
+  day_number_font_size_ = 30;
   clear_has_day_number_font_size();
 }
 inline double CalendarConfig::day_number_font_size() const {
@@ -1169,18 +1169,18 @@ inline void CalendarConfig::set_allocated_day_plan_font_family(::std::string* da
   // @@protoc_insertion_point(field_set_allocated:config.CalendarConfig.day_plan_font_family)
 }
 
-// optional double day_plan_font_size = 16;
+// optional double day_plan_font_size = 16 [default = 20];
 inline bool CalendarConfig::has_day_plan_font_size() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
+  return (_has_bits_[0] & 0x00100000u) != 0;
 }
 inline void CalendarConfig::set_has_day_plan_font_size() {
-  _has_bits_[0] |= 0x00020000u;
+  _has_bits_[0] |= 0x00100000u;
 }
 inline void CalendarConfig::clear_has_day_plan_font_size() {
-  _has_bits_[0] &= ~0x00020000u;
+  _has_bits_[0] &= ~0x00100000u;
 }
 inline void CalendarConfig::clear_day_plan_font_size() {
-  day_plan_font_size_ = 0;
+  day_plan_font_size_ = 20;
   clear_has_day_plan_font_size();
 }
 inline double CalendarConfig::day_plan_font_size() const {
@@ -1261,13 +1261,13 @@ inline void CalendarConfig::set_allocated_month_label_font_family(::std::string*
 
 // optional double month_label_font_size = 18;
 inline bool CalendarConfig::has_month_label_font_size() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void CalendarConfig::set_has_month_label_font_size() {
-  _has_bits_[0] |= 0x00040000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void CalendarConfig::clear_has_month_label_font_size() {
-  _has_bits_[0] &= ~0x00040000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void CalendarConfig::clear_month_label_font_size() {
   month_label_font_size_ = 0;
@@ -1285,13 +1285,13 @@ inline void CalendarConfig::set_month_label_font_size(double value) {
 
 // optional bool month_label_uppercase = 19 [default = false];
 inline bool CalendarConfig::has_month_label_uppercase() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
+  return (_has_bits_[0] & 0x00002000u) != 0;
 }
 inline void CalendarConfig::set_has_month_label_uppercase() {
-  _has_bits_[0] |= 0x00010000u;
+  _has_bits_[0] |= 0x00002000u;
 }
 inline void CalendarConfig::clear_has_month_label_uppercase() {
-  _has_bits_[0] &= ~0x00010000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline void CalendarConfig::clear_month_label_uppercase() {
   month_label_uppercase_ = false;
@@ -1373,18 +1373,18 @@ inline void CalendarConfig::set_allocated_wday_label_font_family(::std::string* 
   // @@protoc_insertion_point(field_set_allocated:config.CalendarConfig.wday_label_font_family)
 }
 
-// optional double wday_label_font_size = 21;
+// optional double wday_label_font_size = 21 [default = 16];
 inline bool CalendarConfig::has_wday_label_font_size() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
+  return (_has_bits_[0] & 0x00200000u) != 0;
 }
 inline void CalendarConfig::set_has_wday_label_font_size() {
-  _has_bits_[0] |= 0x00080000u;
+  _has_bits_[0] |= 0x00200000u;
 }
 inline void CalendarConfig::clear_has_wday_label_font_size() {
-  _has_bits_[0] &= ~0x00080000u;
+  _has_bits_[0] &= ~0x00200000u;
 }
 inline void CalendarConfig::clear_wday_label_font_size() {
-  wday_label_font_size_ = 0;
+  wday_label_font_size_ = 16;
   clear_has_wday_label_font_size();
 }
 inline double CalendarConfig::wday_label_font_size() const {
