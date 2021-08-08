@@ -16,7 +16,8 @@ auto logger = spdlog::stdout_color_mt("main");
 class CalendarApp : public cppcms::application {
   public:
     CalendarApp(cppcms::service &srv) : cppcms::application(srv) {
-      dispatcher().assign("/img.svg", &CalendarApp::img, this);
+      dispatcher().assign("/img.svg", &CalendarApp::svg, this);
+      dispatcher().assign("/img.png", &CalendarApp::png, this);
       dispatcher().assign(".*", &CalendarApp::redirect, this);
     }
 
@@ -25,7 +26,8 @@ class CalendarApp : public cppcms::application {
       response().set_redirect_header("/index.html");
     }
 
-    void img();
+    void svg();
+    void png();
 
     static cairo_status_t cairoWriteFunc(
         void* closure, const unsigned char* data, unsigned int length) {
@@ -33,6 +35,9 @@ class CalendarApp : public cppcms::application {
         (const char*)data, length);
       return CAIRO_STATUS_SUCCESS;
     }
+
+  private:
+    Calendar buildCalendar();
 };
 
 config::DayOfTheWeek getDayOfTheWeekType(const std::string& d)
@@ -59,7 +64,7 @@ config::DurationType getDurationType(const std::string& d)
   return config::DurationType::TWO_YEARS_FIRST_YEAR;
 }
 
-void CalendarApp::img()
+Calendar CalendarApp::buildCalendar()
 {
   config::CalendarConfig conf;
 
@@ -101,14 +106,39 @@ void CalendarApp::img()
   conf.set_language(config::Language::ENGLISH);
   conf.set_paper_type(config::PaperType::US_LETTER);
   conf.set_year(2022);
-  conf.set_month(7);
-  conf.set_default_font_family("Glass Antiqua Bold");
-  conf.set_month_label_font_size(100);
+  conf.set_month(stoi(request().get("i")) + 1);
 
-  response().set_header("Content-Type", "image/svg+xml");
+  conf.set_default_font_family("Ubuntu");
+
+  conf.set_month_label_font_family("Merriweather");
+  conf.set_month_label_font_size(80);
+
+  conf.set_wday_label_font_size(20);
+  conf.set_day_number_font_size(25);
+
+  conf.set_day_plan_font_family("BarlowCondensed");
+  conf.set_day_plan_font_size(23);
 
   Calendar calendar(std::move(conf));
+  return calendar;
+}
+
+void CalendarApp::svg()
+{
+  response().set_header("Content-Type", "image/svg+xml");
+  response().cache_control("public, max-age=3600");
+
+  Calendar calendar = buildCalendar();
   calendar.streamSvg(CalendarApp::cairoWriteFunc, this);
+}
+
+void CalendarApp::png()
+{
+  response().cache_control("public, max-age=3600");
+  response().set_header("Content-Type", "image/png");
+
+  Calendar calendar = buildCalendar();
+  calendar.streamPng(CalendarApp::cairoWriteFunc, this);
 }
 
 int main(int argc,char ** argv)

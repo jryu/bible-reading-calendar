@@ -1,19 +1,22 @@
-output_file_name: "en_letter"
+language: ENGLISH
+coverage_type: WHOLE_BIBLE_IN_PARALLEL
+duration_type: ONE_YEAR
+days_to_rest: SUN
+output_file_name: "en"
 output_type: PNG
-plan_type: NEW_TESTAMENT_AND_PSALMS
+#paper_type: LETTER
 year: 2021
 month: 1
 
 cell_margin: 10
 line_width: 1
 
-default_font_family: "Glass Antiqua Bold"
+default_font_family: "Ubuntu"
+month_label_font_family: "Merriweather"
 
 month_label_font_size: 100
-month_label_uppercase: true
-
-wday_label_font_size: 16
-day_number_font_size: 30
+wday_label_font_size: 20
+day_number_font_size: 25
 
 day_plan_font_family: "BarlowCondensed"
-day_plan_font_size: 20
+day_plan_font_size: 23

@@ -14,6 +14,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { LightgalleryModule } from 'lightgallery/angular';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -22,6 +24,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    LightgalleryModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,

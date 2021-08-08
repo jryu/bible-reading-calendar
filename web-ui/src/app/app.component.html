@@ -181,7 +181,18 @@
 
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
-    <img src="{{ previewUrl }}" width=100% height=100%>
+    <lightgallery [settings]="settings" [onInit]="onInit">
+    <!-- I had to use dynamic mode because the gallery was still showing old
+      list of images with new ones even if refresh() has been called on
+      ngAfterViewChecked -->
+    </lightgallery>
+    <a
+      *ngFor="let galleryItem of galleryItems; let i = index;"
+      (click)="lightGallery.openGallery(i)"
+      data-lg-size="1100-850"
+      >
+      <img [src]="galleryItem.thumb" width=33%>
+    </a>
     <div>
       <button mat-button matStepperPrevious>▲ Back</button>
     </div>

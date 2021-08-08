@@ -226,7 +226,7 @@ Calendar::Calendar(config::CalendarConfig conf) :
     {"Hosea", {"Hosea", "Hosea"}},
     {"Joel", {"Joel", "Joel"}},
     {"Amos", {"Amos", "Amos"}},
-    {"Obadiah", {"Obadiah", "Obadiah"}},
+    {"Obadiah", {"Obad", "Obadiah"}},
     {"Jonah", {"Jonah", "Jonah"}},
     {"Micah", {"Micah", "Micah"}},
     {"Nahum", {"Nahum", "Nahum"}},
@@ -555,7 +555,7 @@ void Calendar::drawMonth(int year, int month,
           surface_width_, surface_height_);
       break;
     case config::OutputType::PNG:
-      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+      surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
           surface_width_, surface_height_);
       break;
     default:
@@ -581,6 +581,12 @@ void Calendar::drawMonthOnSurface(int year, int month,
 {
   y_offset_ = 0;
   cr_ = cairo_create(surface);
+
+  // Paint white background.
+  cairo_save(cr_);
+  cairo_set_source_rgb(cr_, 1, 1, 1);
+  cairo_paint(cr_);
+  cairo_restore(cr_);
 
   drawMonthLabel(month);
 
@@ -652,5 +658,22 @@ void Calendar::streamSvg(cairo_write_func_t writeFunc, void *closure)
   }
   drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
 
+  cairo_surface_destroy(surface);
+}
+
+void Calendar::streamPng(cairo_write_func_t writeFunc, void *closure)
+{
+  cairo_surface_t* surface = cairo_image_surface_create(
+      CAIRO_FORMAT_ARGB32, surface_width_, surface_height_);
+
+  std::queue<std::string> bible_reading_plan =
+    getBibleReadingPlan();
+
+  for (int i = 1; i < conf_.month(); ++i) {
+    skipMonth(conf_.year(), i, &bible_reading_plan);
+  }
+  drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
+
+  cairo_surface_write_to_png_stream(surface, writeFunc, closure);
   cairo_surface_destroy(surface);
 }

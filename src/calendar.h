@@ -29,6 +29,7 @@ class Calendar {
     Calendar(config::CalendarConfig conf);
     void draw();
     void streamSvg(cairo_write_func_t writeFunc, void *closure);
+    void streamPng(cairo_write_func_t writeFunc, void *closure);
 
   private:
     std::string getBookName(const std::string& book_id);

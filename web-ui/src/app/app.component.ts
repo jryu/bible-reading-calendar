@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LightGallery } from 'lightgallery/lightgallery';
+import lgZoom from 'lightgallery/plugins/zoom';
 import { MatStepper } from '@angular/material/stepper';
 
 interface WeekDay {
@@ -18,6 +20,7 @@ export class AppComponent implements OnInit {
   optionsForNewTestamentOnly!: FormGroup;
   optionsForWholeBible!: FormGroup;
   optionsForOthers!: FormGroup;
+  lightGallery!: LightGallery;
 
   previewUrl = ''
 
@@ -41,6 +44,21 @@ export class AppComponent implements OnInit {
     {value: 'friday', viewValue: 'Friday'},
     {value: 'saturday', viewValue: 'Saturday'}
   ];
+
+  galleryItems: LightGallery["galleryItems"] = [];
+
+  settings = {
+    download: false,
+    dynamic: true,
+    dynamicEl: [],
+    loop: false,
+    mobileSettings: {
+      controls: true,
+      download: false,
+      showCloseIcon: true,
+    },
+    plugins: [lgZoom],
+  };
 
   constructor(private _fb: FormBuilder) {
   }
@@ -85,6 +103,10 @@ export class AppComponent implements OnInit {
     });
   }
 
+  onInit = (detail: any): void => {
+    this.lightGallery = detail.instance;
+  };
+
   coverageType() {
     return this.coverageForm.get('coverageType')!.value;
   }
@@ -95,11 +117,16 @@ export class AppComponent implements OnInit {
 
   onStepChange(stepper: MatStepper) {
     if (stepper.selectedIndex == stepper.steps.length - 1) {
-      this.previewUrl = '/hello/img.svg?' + this.getUrlParam();
+      this.galleryItems.length = 0;
+      for (let i = 0; i < 12; i++) {
+        let url = '/hello/img.png?' + this.getUrlParam(i);
+        this.galleryItems.push({src: url, thumb: url});
+      }
+      this.lightGallery.refresh(this.galleryItems);
     }
   }
 
-  getUrlParam() {
+  getUrlParam(index: number) {
     var param = new URLSearchParams();
     param.append('c', this.coverageType());
 
@@ -130,6 +157,8 @@ export class AppComponent implements OnInit {
                      this.optionsForOthers.get('restDay')!.value);
         break;
     }
+    param.append('y', '2022');
+    param.append('i', String(index));
     return param.toString();
   }
 }
