@@ -180,7 +180,13 @@
   </mat-step>
 
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
+    <ng-template matStepLabel>Preview</ng-template>
+
+    <label class="label-on-form-field">
+      You may click on following images to take a closer look. Feel free to go
+      back to previous steps to change your answers before downloading.
+    </label>
+
     <lightgallery [settings]="settings" [onInit]="onInit">
     <!-- I had to use dynamic mode because the gallery was still showing old
       list of images with new ones even if refresh() has been called on
