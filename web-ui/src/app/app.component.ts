@@ -119,8 +119,12 @@ export class AppComponent implements OnInit {
     if (stepper.selectedIndex == stepper.steps.length - 1) {
       this.galleryItems.length = 0;
       for (let i = 0; i < 12; i++) {
-        let url = '/hello/img.png?' + this.getUrlParam(i);
-        this.galleryItems.push({src: url, thumb: url});
+        this.galleryItems.push({
+          // The gallery does not support zooming SVG image.
+          src: '/hello/img.png?' + this.getUrlParam(i),
+          // SVG scales better than PNG.
+          thumb: '/hello/img.svg?' + this.getUrlParam(i)
+        });
       }
       this.lightGallery.refresh(this.galleryItems);
     }
