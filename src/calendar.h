@@ -17,7 +17,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "config.pb.h"
+#include <config.pb.h>
 
 struct Book {
   std::string short_name;
