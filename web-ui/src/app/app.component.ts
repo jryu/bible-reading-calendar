@@ -112,25 +112,40 @@ export class AppComponent implements OnInit {
   }
 
   durationType() {
-    return this.durationForm.get('durationType')!.value;
+    if (['old-testament', 'whole-bible'].includes(
+      this.coverageType())) {
+      return this.durationForm.get('durationType')!.value;
+    } else {
+      return '';
+    }
   }
 
   onStepChange(stepper: MatStepper) {
     if (stepper.selectedIndex == stepper.steps.length - 1) {
       this.galleryItems.length = 0;
       for (let i = 0; i < 12; i++) {
+        let urlParam = this.getUrlParam(2022, 0, i);
         this.galleryItems.push({
           // The gallery does not support zooming SVG image.
-          src: '/hello/img.png?' + this.getUrlParam(i),
+          src: '/hello/img.png?' + urlParam,
           // SVG scales better than PNG.
-          thumb: '/hello/img.svg?' + this.getUrlParam(i)
+          thumb: '/hello/img.svg?' + urlParam
         });
+      }
+      if (this.durationType() === 'two-years') {
+        for (let i = 0; i < 12; i++) {
+          let urlParam = this.getUrlParam(2022, 1, i);
+          this.galleryItems.push({
+            src: '/hello/img.png?' + urlParam,
+            thumb: '/hello/img.svg?' + urlParam
+          });
+        }
       }
       this.lightGallery.refresh(this.galleryItems);
     }
   }
 
-  getUrlParam(index: number) {
+  getUrlParam(year: number, yearIndex: number, month: number) {
     var param = new URLSearchParams();
     param.append('c', this.coverageType());
 
@@ -162,7 +177,8 @@ export class AppComponent implements OnInit {
         break;
     }
     param.append('y', '2022');
-    param.append('i', String(index));
+    param.append('yi', yearIndex.toString());
+    param.append('i', String(month));
     return param.toString();
   }
 }

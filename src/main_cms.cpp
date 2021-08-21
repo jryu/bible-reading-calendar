@@ -56,12 +56,13 @@ bool hasRestDay(const std::string& d)
   return d != "everyday";
 }
 
-config::DurationType getDurationType(const std::string& d)
+config::DurationType getDurationType(const std::string& d, const std::string& yi)
 {
   if (d == "one-year") return config::DurationType::ONE_YEAR;
 
-  // TODO: Make another parameter to get the second year.
-  return config::DurationType::TWO_YEARS_FIRST_YEAR;
+  if (yi == "0") return config::DurationType::TWO_YEARS_FIRST_YEAR;
+
+  return config::DurationType::TWO_YEARS_SECOND_YEAR;
 }
 
 Calendar CalendarApp::buildCalendar()
@@ -75,12 +76,14 @@ Calendar CalendarApp::buildCalendar()
     conf.add_days_to_rest(getDayOfTheWeekType(request().get("r2")));
   } else if (c == "old-testament") {
     conf.set_coverage_type(config::CoverageType::OLD_TESTAMENT);
-    conf.set_duration_type(getDurationType(request().get("d")));
+    conf.set_duration_type(getDurationType(
+          request().get("d"), request().get("yi")));
     if (hasRestDay(request().get("r"))) {
       conf.add_days_to_rest(getDayOfTheWeekType(request().get("r")));
     }
   } else if (c == "whole-bible") {
-    conf.set_duration_type(getDurationType(request().get("d")));
+    conf.set_duration_type(getDurationType(
+          request().get("d"), request().get("yi")));
     if (hasRestDay(request().get("r"))) {
       conf.add_days_to_rest(getDayOfTheWeekType(request().get("r")));
     }
