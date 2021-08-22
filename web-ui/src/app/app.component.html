@@ -215,6 +215,21 @@
 
     <div>
       <button mat-button matStepperPrevious>▲ Back</button>
+      <button mat-button matStepperNext>Next ▼</button>
     </div>
   </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Download</ng-template>
+
+    <a mat-raised-button [href]="pdfUrl" target="_blank">
+      <mat-icon aria-hidden="false" aria-label="download icon">download</mat-icon>
+      Download PDF
+    </a>
+
+    <div>
+      <button mat-button matStepperPrevious>▲ Back</button>
+    </div>
+  </mat-step>
+
 </mat-stepper>

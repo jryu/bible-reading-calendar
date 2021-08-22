@@ -627,6 +627,17 @@ void Calendar::drawMonthOnSurface(int year, int month,
   cairo_destroy(cr_);
 }
 
+void Calendar::streamMonthOnSurface(int year, int month,
+    cairo_surface_t* surface) {
+  std::queue<std::string> bible_reading_plan =
+    getBibleReadingPlan();
+
+  for (int i = 1; i < conf_.month(); ++i) {
+    skipMonth(conf_.year(), i, &bible_reading_plan);
+  }
+  drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
+}
+
 void Calendar::draw()
 {
   std::queue<std::string> bible_reading_plan =
@@ -650,13 +661,7 @@ void Calendar::streamSvg(cairo_write_func_t writeFunc, void *closure)
     cairo_svg_surface_create_for_stream(writeFunc, closure,
         surface_width_, surface_height_);
 
-  std::queue<std::string> bible_reading_plan =
-    getBibleReadingPlan();
-
-  for (int i = 1; i < conf_.month(); ++i) {
-    skipMonth(conf_.year(), i, &bible_reading_plan);
-  }
-  drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
+  streamMonthOnSurface(conf_.year(), conf_.month(), surface);
 
   cairo_surface_destroy(surface);
 }
@@ -666,14 +671,24 @@ void Calendar::streamPng(cairo_write_func_t writeFunc, void *closure)
   cairo_surface_t* surface = cairo_image_surface_create(
       CAIRO_FORMAT_ARGB32, surface_width_, surface_height_);
 
+  streamMonthOnSurface(conf_.year(), conf_.month(), surface);
+
+  cairo_surface_write_to_png_stream(surface, writeFunc, closure);
+  cairo_surface_destroy(surface);
+}
+
+void Calendar::streamPdf(cairo_write_func_t writeFunc, void *closure)
+{
   std::queue<std::string> bible_reading_plan =
     getBibleReadingPlan();
 
-  for (int i = 1; i < conf_.month(); ++i) {
-    skipMonth(conf_.year(), i, &bible_reading_plan);
-  }
-  drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
+  cairo_surface_t* surface =
+    cairo_pdf_surface_create_for_stream(writeFunc, closure,
+        surface_width_, surface_height_);
 
-  cairo_surface_write_to_png_stream(surface, writeFunc, closure);
+  for (int i = 0; i < 12 ; ++i) {
+    drawMonthOnSurface(conf_.year(), i + 1, &bible_reading_plan, surface);
+    cairo_surface_show_page(surface);
+  }
   cairo_surface_destroy(surface);
 }

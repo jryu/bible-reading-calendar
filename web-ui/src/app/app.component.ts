@@ -22,8 +22,6 @@ export class AppComponent implements OnInit {
   optionsForOthers!: FormGroup;
   lightGallery!: LightGallery;
 
-  previewUrl = ''
-
   catchUpDays: WeekDay[] = [
     {value: 'sunday', viewValue: 'Sunday'},
     {value: 'monday', viewValue: 'Monday'},
@@ -46,6 +44,8 @@ export class AppComponent implements OnInit {
   ];
 
   galleryItems: LightGallery["galleryItems"] = [];
+
+  pdfUrl = '';
 
   settings = {
     download: false,
@@ -121,27 +121,33 @@ export class AppComponent implements OnInit {
   }
 
   onStepChange(stepper: MatStepper) {
-    if (stepper.selectedIndex == stepper.steps.length - 1) {
+    if (stepper.selectedIndex == stepper.steps.length - 2) {
+      // "Preview" is selected.
       this.galleryItems.length = 0;
       for (let i = 0; i < 12; i++) {
         let urlParam = this.getUrlParam(2022, 0, i);
         this.galleryItems.push({
           // The gallery does not support zooming SVG image.
-          src: '/hello/img.png?' + urlParam,
+          src: '/c/img.png?' + urlParam,
           // SVG scales better than PNG.
-          thumb: '/hello/img.svg?' + urlParam
+          thumb: '/c/img.svg?' + urlParam
         });
       }
       if (this.durationType() === 'two-years') {
         for (let i = 0; i < 12; i++) {
           let urlParam = this.getUrlParam(2022, 1, i);
           this.galleryItems.push({
-            src: '/hello/img.png?' + urlParam,
-            thumb: '/hello/img.svg?' + urlParam
+            src: '/c/img.png?' + urlParam,
+            thumb: '/c/img.svg?' + urlParam
           });
         }
       }
       this.lightGallery.refresh(this.galleryItems);
+    } else if (stepper.selectedIndex == stepper.steps.length - 1) {
+      // "Download" is selected
+      // TODO: Remove unnecessary month param.
+      // TODO: Draw 2 years in PDF or 2 links of PDF?
+      this.pdfUrl = '/c/img.pdf?' + this.getUrlParam(2022, 1, 1);
     }
   }
 

@@ -5,7 +5,7 @@
 		"port" : 8080
 	},
 	"http" : {
-		"script" : "/hello"
+		"script" : "/c"
 	},
 	"file_server" : {
 		"enable" : true,

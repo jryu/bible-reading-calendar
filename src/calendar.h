@@ -30,6 +30,7 @@ class Calendar {
     void draw();
     void streamSvg(cairo_write_func_t writeFunc, void *closure);
     void streamPng(cairo_write_func_t writeFunc, void *closure);
+    void streamPdf(cairo_write_func_t writeFunc, void *closure);
 
   private:
     std::string getBookName(const std::string& book_id);
@@ -66,6 +67,9 @@ class Calendar {
 
     void drawMonthOnSurface(int year, int month,
         std::queue<std::string>* bible_reading_plan,
+        cairo_surface_t* surface);
+
+    void streamMonthOnSurface(int year, int month,
         cairo_surface_t* surface);
 
     static std::shared_ptr<spdlog::logger> logger_;
