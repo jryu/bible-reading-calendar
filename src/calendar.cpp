@@ -416,8 +416,9 @@ void Calendar::drawMonthLabel(int month) {
   pango_layout_get_size(layout, &width, &height);
   cairo_move_to(cr_,
       (surface_width_ - ((double) width / PANGO_SCALE)) / 2,
-      conf_.cell_margin());
-  y_offset_ += (double) height / PANGO_SCALE + conf_.cell_margin() * 2;
+      conf_.margin_top());
+  y_offset_ += (double) height / PANGO_SCALE +
+    conf_.margin_top() + conf_.cell_margin();
   logger_->debug("y_offset_: {}" , y_offset_);
   pango_cairo_show_layout(cr_, layout);
 

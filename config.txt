@@ -8,14 +8,20 @@ paper_type: A4
 year: 2021
 month: 1
 
+margin_top: 25
 cell_margin: 10
 line_width: 1
 
 default_font_family: "Nanum Gothic Bold"
 
-month_label_font_size: 80
-wday_label_font_size: 16
-day_number_font_size: 30
+month_label_font_family: "Gothic A1 ExtraBold"
+month_label_font_size: 100
 
-day_plan_font_family: "Nanum Gothic"
+wday_label_font_family: "Gothic A1 Bold"
+wday_label_font_size: 18
+
+day_number_font_family: "Mulish Bold"
+day_number_font_size: 28
+
+day_plan_font_family: "Gothic A1"
 day_plan_font_size: 20
