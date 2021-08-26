@@ -13,6 +13,12 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "ko": "src/locale/messages.ko.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -22,6 +28,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "localize": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -55,6 +62,8 @@
               "outputHashing": "all"
             },
             "development": {
+              "localize": ["ko"],
+              "baseHref": "/ko/",
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,

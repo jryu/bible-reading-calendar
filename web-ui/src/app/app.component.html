@@ -4,21 +4,21 @@
       <mat-list-item role="listitem">
         <button mat-button class=menu-button>
           <mat-icon>home</mat-icon>
-          Home
+          <span i18n>Home</span>
         </button>
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item role="listitem">
         <button mat-button  class=menu-button [matMenuTriggerFor]="language">
           <mat-icon>language</mat-icon>
-          Language
+          <span i18n>Language</span>
         </button>
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item role="listitem">
         <button mat-button class=menu-button>
           <mat-icon>info</mat-icon>
-          About
+          <span i18n>About</span>
         </button>
       </mat-list-item>
       <mat-divider></mat-divider>
@@ -26,7 +26,7 @@
 
     <mat-menu #language="matMenu">
       <button mat-menu-item>English</button>
-      <button mat-menu-item>Korean</button>
+      <button mat-menu-item>한국어</button>
     </mat-menu>
   </mat-sidenav>
 
@@ -35,7 +35,7 @@
       <button mat-icon-button aria-label="Menu button" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-     <span>Bible Reading Calendar</span>
+     <span i18n>Bible Reading Calendar</span>
       <span class="toolbar-spacer"></span>
     </mat-toolbar>
 
@@ -45,26 +45,26 @@
       #stepper>
       <mat-step [stepControl]="coverageForm">
         <form [formGroup]="coverageForm">
-          <ng-template matStepLabel>What do you want to read?</ng-template>
+          <ng-template matStepLabel i18n>What do you want to read?</ng-template>
           <mat-radio-group
             aria-labelledby="example-radio-group-label"
             class="bible-radio-group"
             formControlName="coverageType">
-            <mat-radio-button class="bible-radio-button" value="new-testament">
+            <mat-radio-button i18n class="bible-radio-button" value="new-testament">
               New Testament
             </mat-radio-button>
-            <mat-radio-button class="bible-radio-button" value="new-testament-and-psalms">
+            <mat-radio-button i18n class="bible-radio-button" value="new-testament-and-psalms">
               New Testament + Psalms
             </mat-radio-button>
-            <mat-radio-button class="bible-radio-button" value="old-testament">
+            <mat-radio-button i18n class="bible-radio-button" value="old-testament">
               Old Testament
             </mat-radio-button>
-            <mat-radio-button class="bible-radio-button" value="whole-bible">
+            <mat-radio-button i18n class="bible-radio-button" value="whole-bible">
               Whole Bible
             </mat-radio-button>
           </mat-radio-group>
           <div>
-            <button mat-button matStepperNext>Next ▼</button>
+            <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
           </div>
         </form>
       </mat-step>
