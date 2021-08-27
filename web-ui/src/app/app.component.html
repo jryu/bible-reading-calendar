@@ -9,7 +9,7 @@
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item role="listitem">
-        <button mat-button  class=menu-button [matMenuTriggerFor]="language">
+        <button mat-button class=menu-button [matMenuTriggerFor]="language">
           <mat-icon>language</mat-icon>
           <span i18n>Language</span>
         </button>
@@ -25,8 +25,8 @@
     </mat-list>
 
     <mat-menu #language="matMenu">
-      <button mat-menu-item>English</button>
-      <button mat-menu-item>한국어</button>
+      <a mat-menu-item href='/en-US' [disabled]="locale === 'en-US'">English</a>
+      <a mat-menu-item href='/ko' [disabled]="locale === 'ko'">한국어</a>
     </mat-menu>
   </mat-sidenav>
 
@@ -38,7 +38,6 @@
       <span i18n>Bible Reading Calendar</span>
       <span class="toolbar-spacer"></span>
     </mat-toolbar>
-
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>

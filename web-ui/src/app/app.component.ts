@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 
@@ -10,7 +10,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class AppComponent implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnInit() {
   }
