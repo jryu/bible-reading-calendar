@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav>
     <mat-list role="list" class="sidenav-list">
       <mat-list-item role="listitem">
-        <button mat-button class=menu-button>
+        <button mat-button class=menu-button (click)="navigate('/')">
           <mat-icon>home</mat-icon>
           <span i18n>Home</span>
         </button>
@@ -16,7 +16,7 @@
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item role="listitem">
-        <button mat-button class=menu-button>
+        <button mat-button class=menu-button (click)="navigate('/about')">
           <mat-icon>info</mat-icon>
           <span i18n>About</span>
         </button>
@@ -35,232 +35,11 @@
       <button mat-icon-button aria-label="Menu button" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-     <span i18n>Bible Reading Calendar</span>
+      <span i18n>Bible Reading Calendar</span>
       <span class="toolbar-spacer"></span>
     </mat-toolbar>
 
-    <mat-stepper
-      orientation="vertical" linear
-      (animationDone)="onStepChange(stepper)"
-      #stepper>
-      <mat-step [stepControl]="coverageForm">
-        <form [formGroup]="coverageForm">
-          <ng-template matStepLabel i18n>What do you want to read?</ng-template>
-          <mat-radio-group
-            aria-labelledby="example-radio-group-label"
-            class="bible-radio-group"
-            formControlName="coverageType">
-            <mat-radio-button i18n class="bible-radio-button" value="new-testament">
-              New Testament
-            </mat-radio-button>
-            <mat-radio-button i18n class="bible-radio-button" value="new-testament-and-psalms">
-              New Testament + Psalms
-            </mat-radio-button>
-            <mat-radio-button i18n class="bible-radio-button" value="old-testament">
-              Old Testament
-            </mat-radio-button>
-            <mat-radio-button i18n class="bible-radio-button" value="whole-bible">
-              Whole Bible
-            </mat-radio-button>
-          </mat-radio-group>
-          <div>
-            <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
-          </div>
-        </form>
-      </mat-step>
 
-      <mat-step [stepControl]="durationForm"
-                    *ngIf="['old-testament', 'whole-bible'].includes(
-                           coverageType())">
-        <form [formGroup]="durationForm">
-          <ng-template matStepLabel>For how long?</ng-template>
-          <mat-radio-group
-            aria-labelledby="example-radio-group-label"
-            class="bible-radio-group"
-            formControlName="durationType">
-            <mat-radio-button class="bible-radio-button" value="one-year">
-              One Year
-            </mat-radio-button>
-            <mat-radio-button class="bible-radio-button" value="two-years">
-              Two Years
-            </mat-radio-button>
-          </mat-radio-group>
-          <div>
-            <button mat-button matStepperPrevious>▲ Back</button>
-            <button mat-button matStepperNext>Next ▼</button>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step
-        *ngIf="coverageType() === 'new-testament'"
-        [stepControl]="optionsForNewTestamentOnly">
-        <form [formGroup]="optionsForNewTestamentOnly">
-          <ng-template matStepLabel>Smart Options</ng-template>
-
-          <label class="label-on-form-field">
-            Please choose 2 days of the week to rest or catch up
-          </label>
-
-          <div>
-            <mat-form-field appearance="outline">
-              <mat-label>1st day</mat-label>
-              <mat-select name="wday-to-rest-1" formControlName="restDay1">
-                <mat-option
-                  *ngFor="let weekDay of catchUpDays"
-                  [value]="weekDay.value"
-                  [disabled]="weekDay.value === optionsForNewTestamentOnly.get('restDay2')!.value">
-                  {{weekDay.viewValue}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <mat-form-field appearance="outline">
-            <mat-label>2nd day</mat-label>
-            <mat-select name="wday-to-rest-2" formControlName="restDay2">
-              <mat-option
-                *ngFor="let weekDay of catchUpDays"
-                [value]="weekDay.value"
-                [disabled]="weekDay.value === optionsForNewTestamentOnly.get('restDay1')!.value">
-                {{weekDay.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <div>
-            <button mat-button matStepperPrevious>▲ Back</button>
-            <button mat-button matStepperNext>Next ▼</button>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step
-        *ngIf="['new-testament-and-psalms', 'old-testament'].includes(
-               coverageType())"
-        [stepControl]="optionsForOthers">
-        <form [formGroup]="optionsForOthers">
-          <ng-template matStepLabel>Smart Options</ng-template>
-          <label class="label-on-form-field">
-            You may choose a day of the week to rest or catch up
-          </label>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Day to rest or catch up</mat-label>
-            <mat-select name="wday-to-rest" formControlName="restDay">
-              <mat-option *ngFor="let weekDay of weekDays" [value]="weekDay.value">
-                {{weekDay.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <div>
-            <button mat-button matStepperPrevious>▲ Back</button>
-            <button mat-button matStepperNext>Next ▼</button>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step
-        *ngIf="coverageType() === 'whole-bible'"
-        [stepControl]="optionsForWholeBible">
-        <form [formGroup]="optionsForWholeBible">
-          <ng-template matStepLabel>Smart Options</ng-template>
-          <div>
-            <label id="reading-order-radio-group-label" class="label-on-form-field">
-              In which order would you like to read?
-            </label>
-            <mat-radio-group
-              aria-labelledby="reading-order-radio-group-label"
-              class="bible-radio-group"
-              formControlName="orderType">
-              <mat-radio-button class="bible-radio-button" value="old-testament-first">
-                Old Testament First
-              </mat-radio-button>
-              <mat-radio-button class="bible-radio-button" value="new-testament-first">
-                New Testament First
-              </mat-radio-button>
-              <mat-radio-button class="bible-radio-button" value="in-parallel">
-                Read both Old & New Testament each day
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-
-          <mat-divider></mat-divider>
-
-          <label class="label-on-form-field">
-            You may choose a day of the week to rest or catch up
-          </label>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Day to rest or catch up</mat-label>
-            <mat-select name="wday-to-rest" formControlName="restDay">
-              <mat-option *ngFor="let weekDay of weekDays" [value]="weekDay.value">
-                {{weekDay.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <div>
-            <button mat-button matStepperPrevious>▲ Back</button>
-            <button mat-button matStepperNext>Next ▼</button>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step>
-        <ng-template matStepLabel>Preview</ng-template>
-
-        <label class="label-on-form-field">
-          You may click on following images to take a closer look. Feel free to go
-          back to previous steps to change your answers before downloading.
-        </label>
-
-        <lightgallery [settings]="settings" [onInit]="onInit">
-        <!-- I had to use dynamic mode because the gallery was still showing old
-          list of images with new ones even if refresh() has been called on
-          ngAfterViewChecked -->
-        </lightgallery>
-
-        <div *ngIf="durationType() === 'two-years'" class='label-on-thumbnails'>
-          2022
-        </div>
-        <a
-          *ngFor="let galleryItem of galleryItems; let i = index;"
-          (click)="lightGallery.openGallery(i)"
-          >
-          <img *ngIf="i < 12" [src]="galleryItem.thumb" class="calendar-thumbnail">
-        </a>
-
-          <div *ngIf="durationType() === 'two-years'" class='label-on-thumbnails second-year'>
-            2023
-          </div>
-          <a
-            *ngFor="let galleryItem of galleryItems; let i = index;"
-            (click)="lightGallery.openGallery(i)"
-            >
-            <img *ngIf="i >= 12" [src]="galleryItem.thumb" class="calendar-thumbnail">
-          </a>
-
-            <div>
-              <button mat-button matStepperPrevious>▲ Back</button>
-              <button mat-button matStepperNext>Next ▼</button>
-            </div>
-      </mat-step>
-
-      <mat-step>
-        <ng-template matStepLabel>Download</ng-template>
-
-        <a mat-raised-button [href]="pdfUrl" target="_blank">
-          <mat-icon aria-hidden="false" aria-label="download icon">download</mat-icon>
-          Download PDF
-        </a>
-
-        <div>
-          <button mat-button matStepperPrevious>▲ Back</button>
-        </div>
-      </mat-step>
-
-    </mat-stepper>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

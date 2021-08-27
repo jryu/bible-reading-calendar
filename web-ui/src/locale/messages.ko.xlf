@@ -33,43 +33,43 @@
       <trans-unit id="4080292055768592743" datatype="html">
         <source>무엇을 읽으시겠습니까?</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5702209775209511881" datatype="html">
         <source>신약</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">54,55</context>
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">13,14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5221623426358852648" datatype="html">
         <source>신약 + 시편</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">57,58</context>
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">16,17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4019152436229356372" datatype="html">
         <source>구약</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">60,61</context>
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">19,20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="301549842143248681" datatype="html">
         <source>성경 전체</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">63,64</context>
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">22,23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3885497195825665706" datatype="html">
         <source>다음</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
     </body>

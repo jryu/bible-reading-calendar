@@ -18,10 +18,15 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { LightgalleryModule } from 'lightgallery/angular';
+import { AppRoutingModule } from './app-routing.module';
+import { BuilderComponent } from './builder/builder.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BuilderComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,8 @@ import { LightgalleryModule } from 'lightgallery/angular';
     MatSidenavModule,
     MatStepperModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
