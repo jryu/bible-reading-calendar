@@ -24,24 +24,24 @@ export class BuilderComponent implements OnInit {
   lightGallery!: LightGallery;
 
   catchUpDays: WeekDay[] = [
-    {value: 'sunday', viewValue: 'Sunday'},
-    {value: 'monday', viewValue: 'Monday'},
-    {value: 'tuesday', viewValue: 'Tuesday'},
-    {value: 'wednesday', viewValue: 'Wednesday'},
-    {value: 'thursday', viewValue: 'Thursday'},
-    {value: 'friday', viewValue: 'Friday'},
-    {value: 'saturday', viewValue: 'Saturday'}
+    {value: 'sunday', viewValue: $localize`Sunday`},
+    {value: 'monday', viewValue: $localize`Monday`},
+    {value: 'tuesday', viewValue: $localize`Tuesday`},
+    {value: 'wednesday', viewValue: $localize`Wednesday`},
+    {value: 'thursday', viewValue: $localize`Thursday`},
+    {value: 'friday', viewValue: $localize`Friday`},
+    {value: 'saturday', viewValue: $localize`Saturday`}
   ];
 
   weekDays: WeekDay[] = [
-    {value: 'everyday', viewValue: "No, I'll read every day!"},
-    {value: 'sunday', viewValue: 'Sunday'},
-    {value: 'monday', viewValue: 'Monday'},
-    {value: 'tuesday', viewValue: 'Tuesday'},
-    {value: 'wednesday', viewValue: 'Wednesday'},
-    {value: 'thursday', viewValue: 'Thursday'},
-    {value: 'friday', viewValue: 'Friday'},
-    {value: 'saturday', viewValue: 'Saturday'}
+    {value: 'everyday', viewValue: $localize`No, I'll read every day!`},
+    {value: 'sunday', viewValue: $localize`Sunday`},
+    {value: 'monday', viewValue: $localize`Monday`},
+    {value: 'tuesday', viewValue: $localize`Tuesday`},
+    {value: 'wednesday', viewValue: $localize`Wednesday`},
+    {value: 'thursday', viewValue: $localize`Thursday`},
+    {value: 'friday', viewValue: $localize`Friday`},
+    {value: 'saturday', viewValue: $localize`Saturday`}
   ];
 
   galleryItems: LightGallery["galleryItems"] = [];
@@ -49,6 +49,7 @@ export class BuilderComponent implements OnInit {
   pdfUrl = '';
 
   settings = {
+    allowMediaOverlap: true,
     download: false,
     dynamic: true,
     dynamicEl: [],

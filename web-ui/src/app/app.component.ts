@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (this.locale === 'ko') {
-      this.titleService.setTitle('성경읽기 달력');
+      this.titleService.setTitle('성경 읽기 달력');
     }
   }
 
