@@ -130,17 +130,17 @@ export class BuilderComponent implements OnInit {
         let urlParam = this.getUrlParam(2022, 0, i);
         this.galleryItems.push({
           // The gallery does not support zooming SVG image.
-          src: '/c/img.png?' + urlParam,
+          src: '/draw/img.png?' + urlParam,
           // SVG scales better than PNG.
-          thumb: '/c/img.svg?' + urlParam
+          thumb: '/draw/img.svg?' + urlParam
         });
       }
       if (this.durationType() === 'two-years') {
         for (let i = 0; i < 12; i++) {
           let urlParam = this.getUrlParam(2022, 1, i);
           this.galleryItems.push({
-            src: '/c/img.png?' + urlParam,
-            thumb: '/c/img.svg?' + urlParam
+            src: '/draw/img.png?' + urlParam,
+            thumb: '/draw/img.svg?' + urlParam
           });
         }
       }
@@ -149,7 +149,7 @@ export class BuilderComponent implements OnInit {
       // "Download" is selected
       // TODO: Remove unnecessary month param.
       // TODO: Draw 2 years in PDF or 2 links of PDF?
-      this.pdfUrl = '/c/img.pdf?' + this.getUrlParam(2022, 1, 1);
+      this.pdfUrl = '/draw/img.pdf?' + this.getUrlParam(2022, 1, 1);
     }
   }
 

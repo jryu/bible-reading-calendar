@@ -5,7 +5,7 @@
 		"port" : 8080
 	},
 	"http" : {
-		"script" : "/c"
+		"script" : "/draw"
 	},
 	"file_server" : {
 		"enable" : true,
