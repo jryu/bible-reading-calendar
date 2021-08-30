@@ -18,15 +18,15 @@ pkg_check_modules(LIBRSVG2 librsvg-2.0 REQUIRED)
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS config.proto)
 
-add_subdirectory(minizip)
-
-add_executable(cms "main_cms.cpp" ${SRC_FILES} ${HDR_FILES} ${PROTO_SRCS} ${PROTO_HDRS})
+add_executable(bible-reading-calendar "main_cms.cpp" ${SRC_FILES} ${HDR_FILES} ${PROTO_SRCS} ${PROTO_HDRS})
 add_executable(cli "main_cli.cpp" ${SRC_FILES} ${HDR_FILES} ${PROTO_SRCS} ${PROTO_HDRS})
 
-target_include_directories(cms PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CAIRO_INCLUDE_DIRS} ${LIBRSVG2_INCLUDE_DIRS})
-target_link_libraries(cms ${Protobuf_LIBRARIES} ${gflags_LIBRARIES} ${CAIRO_LIBRARIES} ${LIBRSVG2_LIBRARIES} minizip cppcms)
+target_include_directories(bible-reading-calendar PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CAIRO_INCLUDE_DIRS} ${LIBRSVG2_INCLUDE_DIRS})
+target_link_libraries(bible-reading-calendar ${Protobuf_LIBRARIES} ${gflags_LIBRARIES} ${CAIRO_LIBRARIES} ${LIBRSVG2_LIBRARIES} cppcms)
 
 target_include_directories(cli PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CAIRO_INCLUDE_DIRS} ${LIBRSVG2_INCLUDE_DIRS})
-target_link_libraries(cli ${Protobuf_LIBRARIES} ${gflags_LIBRARIES} ${CAIRO_LIBRARIES} ${LIBRSVG2_LIBRARIES} minizip cppcms)
+target_link_libraries(cli ${Protobuf_LIBRARIES} ${gflags_LIBRARIES} ${CAIRO_LIBRARIES} ${LIBRSVG2_LIBRARIES} cppcms)
 
 project(bible_reading_calendar VERSION 1.0)
+
+install(TARGETS bible-reading-calendar DESTINATION bin)
