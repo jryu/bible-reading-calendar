@@ -13,7 +13,7 @@ interface WeekDay {
 @Component({
   selector: 'app-builder',
   templateUrl: './builder.component.html',
-  styleUrls: ['./builder.component.css']
+  styleUrls: ['./builder.component.sass']
 })
 export class BuilderComponent implements OnInit {
   coverageForm!: FormGroup;

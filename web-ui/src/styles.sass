@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use '~@angular/material' as mat
+
+html, body
+  height: 100%
+
+body
+  margin: 0
+  font-family: Roboto, "Helvetica Neue", sans-serif
+
+@include mat.core()
+
+$my-primary: mat.define-palette(mat.$brown-palette, 800)
+$my-accent: mat.define-palette(mat.$deep-orange-palette)
+$my-warn: mat.define-palette(mat.$red-palette)
+
+$my-theme: mat.define-light-theme($my-primary, $my-accent, $my-warn)
+
+@include mat.core-theme($my-theme)
+@include mat.button-theme($my-theme)
+@include mat.menu-theme($my-theme)
+@include mat.radio-theme($my-theme)
+@include mat.select-theme($my-theme)
+@include mat.sidenav-theme($my-theme)
+@include mat.stepper-theme($my-theme)
+@include mat.toolbar-theme($my-theme)
