@@ -23,7 +23,8 @@
 
 #define SECS_PER_DAY (60 * 60 * 24)
 
-DEFINE_string(bible_reading_plans_path, "",
+DEFINE_string(bible_reading_plans_path,
+    "/usr/local/etc/bible-reading-calendar/bible-reading-plans/",
     "A path to bible reading plans directory.");
 
 namespace {
@@ -340,7 +341,7 @@ std::queue<std::string> Calendar::getBibleReadingPlan()
 {
   std::queue<std::string> bible_reading_plan;
 
-  logger_->info(getPlanFileName());
+  logger_->debug(getPlanFileName());
   std::ifstream infile(getPlanFileName());
   std::string line;
   while (std::getline(infile, line)) {

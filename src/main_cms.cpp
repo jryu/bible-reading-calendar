@@ -25,7 +25,13 @@ class CalendarApp : public cppcms::application {
 
     void redirect()
     {
-      response().set_redirect_header("/index.html");
+      const auto language = request().http_accept_language();
+      logger->debug(language);
+      if (language.rfind("ko", 0) == 0) {
+        response().set_redirect_header("/ko/");
+      } else {
+        response().set_redirect_header("/en-US/");
+      }
     }
 
     void svg();
@@ -181,7 +187,6 @@ void CalendarApp::pdf()
   response().set_header("Content-Type", "application/pdf");
 
   Calendar calendar(buildConfig());
-  logger->info("pdf");
   calendar.streamPdf(CalendarApp::cairoWriteFunc, this);
 }
 
@@ -197,11 +202,12 @@ void CalendarApp::png()
 int main(int argc,char ** argv)
 {
   gflags::ParseCommandLineFlags(&argc, &argv, false);
+  // spdlog::set_level(spdlog::level::debug);
 
   try {
     cppcms::service srv(argc,argv);
     srv.applications_pool().mount(cppcms::applications_factory<CalendarApp>());
-    logger->info("Running cppcms service...");
+    logger->debug("Running cppcms service...");
     srv.run();
   }
   catch(std::exception const &e) {

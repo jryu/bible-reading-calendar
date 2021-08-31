@@ -30,3 +30,5 @@ target_link_libraries(cli ${Protobuf_LIBRARIES} ${gflags_LIBRARIES} ${CAIRO_LIBR
 project(bible_reading_calendar VERSION 1.0)
 
 install(TARGETS bible-reading-calendar DESTINATION bin)
+install(FILES conf-prod.js DESTINATION etc/bible-reading-calendar)
+install(DIRECTORY ../bible-reading-plans DESTINATION etc/bible-reading-calendar)
