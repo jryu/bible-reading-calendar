@@ -247,6 +247,13 @@
           <context context-type="linenumber">211</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="4884952458893501897" datatype="html">
+        <source>성경-읽기-달력.pdf</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/builder/builder.component.html</context>
+          <context context-type="linenumber">214</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="2280421609807146729" datatype="html">
         <source>PDF 다운로드</source>
         <context-group purpose="location">

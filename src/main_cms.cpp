@@ -136,38 +136,38 @@ config::CalendarConfig CalendarApp::buildConfig()
   // TODO: ignore 'i' parameter when rendering PDF
   conf.set_month(stoi(request().get("i")) + 1);
 
-  /*
-  conf.set_language(config::Language::ENGLISH);
-  conf.set_paper_type(config::PaperType::US_LETTER);
+  if (request().get("l") == "ko") {
+    conf.set_language(config::Language::KOREAN);
+    conf.set_paper_type(config::PaperType::A4);
 
-  conf.set_default_font_family("Ubuntu");
+    conf.set_default_font_family("Gothic A1");
 
-  conf.set_month_label_font_family("Merriweather");
-  conf.set_month_label_font_size(80);
+    conf.set_margin_top(25);
+    conf.set_month_label_font_family("Gothic A1 ExtraBold");
+    conf.set_month_label_font_size(100);
 
-  conf.set_wday_label_font_size(20);
-  conf.set_day_number_font_size(25);
+    conf.set_wday_label_font_family("Gothic A1 Bold");
+    conf.set_wday_label_font_size(18);
 
-  conf.set_day_plan_font_family("BarlowCondensed");
-  conf.set_day_plan_font_size(23);
-  */
+    conf.set_day_number_font_family("Mulish Bold");
+    conf.set_day_number_font_size(28);
 
-  conf.set_language(config::Language::KOREAN);
-  conf.set_paper_type(config::PaperType::A4);
+    conf.set_day_plan_font_size(20);
+  } else {
+    conf.set_language(config::Language::ENGLISH);
+    conf.set_paper_type(config::PaperType::US_LETTER);
 
-  conf.set_default_font_family("Gothic A1");
+    conf.set_default_font_family("Ubuntu");
 
-  conf.set_margin_top(25);
-  conf.set_month_label_font_family("Gothic A1 ExtraBold");
-  conf.set_month_label_font_size(100);
+    conf.set_month_label_font_family("Merriweather");
+    conf.set_month_label_font_size(80);
 
-  conf.set_wday_label_font_family("Gothic A1 Bold");
-  conf.set_wday_label_font_size(18);
+    conf.set_wday_label_font_size(20);
+    conf.set_day_number_font_size(25);
 
-  conf.set_day_number_font_family("Mulish Bold");
-  conf.set_day_number_font_size(28);
-
-  conf.set_day_plan_font_size(20);
+    conf.set_day_plan_font_family("BarlowCondensed");
+    conf.set_day_plan_font_size(23);
+  }
 
   return conf;
 }

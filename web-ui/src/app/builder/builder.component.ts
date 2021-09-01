@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LightGallery } from 'lightgallery/lightgallery';
@@ -62,7 +62,8 @@ export class BuilderComponent implements OnInit {
     plugins: [lgZoom],
   };
 
-  constructor(private _fb: FormBuilder) {
+  constructor(private _fb: FormBuilder,
+              @Inject(LOCALE_ID) public locale: string) {
   }
 
   ngOnInit(): void {
@@ -187,6 +188,7 @@ export class BuilderComponent implements OnInit {
     param.append('y', '2022');
     param.append('yi', yearIndex.toString());
     param.append('i', String(month));
+    param.append('l', this.locale);
     return param.toString();
   }
 }

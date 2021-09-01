@@ -210,7 +210,8 @@
   <mat-step>
     <ng-template i18n matStepLabel>Download</ng-template>
 
-    <a mat-raised-button [href]="pdfUrl" [download]="pdfUrl" target="_blank">
+    <a mat-raised-button [href]="pdfUrl"
+      i18n-download download="bible-reading-calendar.pdf" target="_blank">
       <mat-icon aria-hidden="false" aria-label="download icon">download</mat-icon>
       <span i18n>Download PDF</span>
     </a>
