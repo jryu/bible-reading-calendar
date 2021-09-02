@@ -6,17 +6,21 @@ output_file_name: "en"
 output_type: PNG
 #paper_type: LETTER
 year: 2021
-month: 1
 
+margin_top: -10
 cell_margin: 10
 line_width: 1
 
-default_font_family: "Ubuntu"
-month_label_font_family: "Merriweather"
+default_font_family: "Roboto"
+month_label_font_family: "Playfair Display"
 
-month_label_font_size: 100
+month_label_font_size: 90
+
 wday_label_font_size: 20
-day_number_font_size: 25
+wday_label_font_family: "Roboto Medium"
+
+day_number_font_size: 28
+#day_number_font_family: "Mulish"
 
 day_plan_font_family: "BarlowCondensed"
 day_plan_font_size: 23
