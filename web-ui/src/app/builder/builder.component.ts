@@ -138,7 +138,7 @@ export class BuilderComponent implements OnInit {
       }
       if (this.durationType() === 'two-years') {
         for (let i = 0; i < 12; i++) {
-          let urlParam = this.getUrlParam(2022, 1, i);
+          let urlParam = this.getUrlParam(2023, 1, i);
           this.galleryItems.push({
             src: '/draw/img.png?' + urlParam,
             thumb: '/draw/img.svg?' + urlParam
@@ -150,7 +150,7 @@ export class BuilderComponent implements OnInit {
       // "Download" is selected
       // TODO: Remove unnecessary month param.
       // TODO: Draw 2 years in PDF or 2 links of PDF?
-      this.pdfUrl = '/draw/img.pdf?' + this.getUrlParam(2022, 1, 1);
+      this.pdfUrl = '/draw/img.pdf?' + this.getUrlParam(2022, 0, 1);
     }
   }
 
@@ -185,7 +185,7 @@ export class BuilderComponent implements OnInit {
                      this.optionsForOthers.get('restDay')!.value);
         break;
     }
-    param.append('y', '2022');
+    param.append('y', String(year));
     param.append('yi', yearIndex.toString());
     param.append('i', String(month));
     param.append('l', this.locale);

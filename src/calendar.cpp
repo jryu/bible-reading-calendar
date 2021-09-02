@@ -692,5 +692,16 @@ void Calendar::streamPdf(cairo_write_func_t writeFunc, void *closure)
     drawMonthOnSurface(conf_.year(), i + 1, &bible_reading_plan, surface);
     cairo_surface_show_page(surface);
   }
+  if (conf_.duration_type() == config::DurationType::TWO_YEARS_FIRST_YEAR) {
+    conf_.set_year(conf_.year() + 1);
+    conf_.set_duration_type(config::DurationType::TWO_YEARS_SECOND_YEAR);
+
+    bible_reading_plan = getBibleReadingPlan();
+
+    for (int i = 0; i < 12 ; ++i) {
+      drawMonthOnSurface(conf_.year(), i + 1, &bible_reading_plan, surface);
+      cairo_surface_show_page(surface);
+    }
+  }
   cairo_surface_destroy(surface);
 }

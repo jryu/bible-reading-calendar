@@ -132,7 +132,7 @@ config::CalendarConfig CalendarApp::buildConfig()
   } else {
     response().status(404);
   }
-  conf.set_year(2022);
+  conf.set_year(stoi(request().get("y")));
   // TODO: ignore 'i' parameter when rendering PDF
   conf.set_month(stoi(request().get("i")) + 1);
 

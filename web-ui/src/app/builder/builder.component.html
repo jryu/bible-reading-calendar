@@ -188,7 +188,7 @@
       *ngFor="let galleryItem of galleryItems; let i = index;"
       (click)="lightGallery.openGallery(i)"
       >
-      <img *ngIf="i < 12" [src]="galleryItem.thumb" class="calendar-thumbnail">
+      <img *ngIf="i < 12" [src]="galleryItem.src" class="calendar-thumbnail">
     </a>
 
       <div *ngIf="durationType() === 'two-years'" class='label-on-thumbnails second-year'>
@@ -198,7 +198,7 @@
         *ngFor="let galleryItem of galleryItems; let i = index;"
         (click)="lightGallery.openGallery(i)"
         >
-        <img *ngIf="i >= 12" [src]="galleryItem.thumb" class="calendar-thumbnail">
+        <img *ngIf="i >= 12" [src]="galleryItem.src" class="calendar-thumbnail">
       </a>
 
         <div>
