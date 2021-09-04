@@ -22,8 +22,8 @@
           Whole Bible
         </mat-radio-button>
       </mat-radio-group>
-      <div>
-        <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
       </div>
     </form>
   </mat-step>
@@ -44,9 +44,9 @@
           Two Years
         </mat-radio-button>
       </mat-radio-group>
-      <div>
-        <button mat-button matStepperPrevious>▲ <span i18n>Back</span></button>
-        <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
       </div>
     </form>
   </mat-step>
@@ -87,9 +87,9 @@
         </mat-select>
       </mat-form-field>
 
-      <div>
-        <button mat-button matStepperPrevious>▲ <span i18n>Back</span></button>
-        <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
       </div>
     </form>
   </mat-step>
@@ -113,9 +113,9 @@
         </mat-select>
       </mat-form-field>
 
-      <div>
-        <button mat-button matStepperPrevious>▲ <span i18n>Back</span></button>
-        <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
       </div>
     </form>
   </mat-step>
@@ -160,9 +160,9 @@
         </mat-select>
       </mat-form-field>
 
-      <div>
-        <button mat-button matStepperPrevious>▲ <span i18n>Back</span></button>
-        <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
       </div>
     </form>
   </mat-step>
@@ -201,24 +201,24 @@
         <img *ngIf="i >= 12" [src]="galleryItem.src" class="calendar-thumbnail">
       </a>
 
-        <div>
-          <button mat-button matStepperPrevious>▲ <span i18n>Back</span></button>
-          <button mat-button matStepperNext><span i18n>Next</span> ▼</button>
-        </div>
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
+      </div>
   </mat-step>
 
   <mat-step>
     <ng-template i18n matStepLabel>Download</ng-template>
 
-    <a mat-raised-button [href]="pdfUrl"
+    <a mat-raised-button color="primary" [href]="pdfUrl"
       i18n-download download="bible-reading-calendar.pdf" target="_blank">
       <mat-icon aria-hidden="false" aria-label="download icon">download</mat-icon>
       <span i18n>Download PDF</span>
     </a>
     <p> </p>
 
-    <div>
-      <button mat-button matStepperPrevious>▲ <span i18n>Back</span></button>
+    <div class=stepper-nav>
+      <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
     </div>
   </mat-step>
 
