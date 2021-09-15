@@ -6,6 +6,10 @@ message CalendarConfig {
 	optional int32 year = 1;
 	optional int32 month = 2;
 
+	optional int32 start_year = 26;
+	optional int32 start_month = 27;
+	optional int32 start_day = 28;
+
 	optional double margin_top = 25 [default = 10];
 
 	optional double cell_width = 3;
@@ -66,8 +70,7 @@ enum CoverageType {
 
 enum DurationType {
 	ONE_YEAR = 0;
-	TWO_YEARS_FIRST_YEAR = 1;
-	TWO_YEARS_SECOND_YEAR = 2;
+	TWO_YEARS = 1;
 }
 
 enum DayOfTheWeek {

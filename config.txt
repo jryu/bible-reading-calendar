@@ -5,7 +5,12 @@ days_to_rest: SUN
 output_file_name: "ko_a4"
 output_type: PNG
 paper_type: A4
-year: 2021
+
+start_year: 2021
+start_month: 10
+start_day: 1
+
+year: 2022
 month: 1
 
 margin_top: 25

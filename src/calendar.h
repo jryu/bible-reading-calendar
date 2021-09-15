@@ -37,11 +37,18 @@ class Calendar {
 
     bool shouldInclude(const struct tm& tm);
 
-    int countDays(int year);
+    int countDays(int year_index);
 
-    std::string getPlanFileName();
+    void initMonthIteration(int* y, int* m);
+    bool isReadingMonth(int y, int m);
+    bool isSelectedMonth(int y, int m);
+    void nextMonth(int* y, int* m);
+
+    std::string getPlanFileName(int year_index);
 
     std::queue<std::string> getBibleReadingPlan();
+    void readPlanFile(const std::string file_name,
+        std::queue<std::string>* bible_reading_plan);
 
     double getDayX(int x_index);
     double getDayY(int y_index);
@@ -69,8 +76,7 @@ class Calendar {
         std::queue<std::string>* bible_reading_plan,
         cairo_surface_t* surface);
 
-    void streamMonthOnSurface(int year, int month,
-        cairo_surface_t* surface);
+    void streamMonthOnSurface(cairo_surface_t* surface);
 
     static std::shared_ptr<spdlog::logger> logger_;
 

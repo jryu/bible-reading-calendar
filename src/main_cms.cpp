@@ -81,14 +81,10 @@ bool hasRestDay(const std::string& d)
   return d != "everyday";
 }
 
-config::DurationType getDurationType(
-    const std::string& d, const std::string& yi)
+config::DurationType getDurationType(const std::string& d)
 {
   if (d == "one-year") return config::DurationType::ONE_YEAR;
-
-  if (yi == "0") return config::DurationType::TWO_YEARS_FIRST_YEAR;
-
-  return config::DurationType::TWO_YEARS_SECOND_YEAR;
+  return config::DurationType::TWO_YEARS;
 }
 
 config::CalendarConfig CalendarApp::buildConfig()
@@ -102,14 +98,12 @@ config::CalendarConfig CalendarApp::buildConfig()
     conf.add_days_to_rest(getDayOfTheWeekType(request().get("r2")));
   } else if (c == "old-testament") {
     conf.set_coverage_type(config::CoverageType::OLD_TESTAMENT);
-    conf.set_duration_type(getDurationType(
-          request().get("d"), request().get("yi")));
+    conf.set_duration_type(getDurationType(request().get("d")));
     if (hasRestDay(request().get("r"))) {
       conf.add_days_to_rest(getDayOfTheWeekType(request().get("r")));
     }
   } else if (c == "whole-bible") {
-    conf.set_duration_type(getDurationType(
-          request().get("d"), request().get("yi")));
+    conf.set_duration_type(getDurationType(request().get("d")));
     if (hasRestDay(request().get("r"))) {
       conf.add_days_to_rest(getDayOfTheWeekType(request().get("r")));
     }
@@ -134,7 +128,14 @@ config::CalendarConfig CalendarApp::buildConfig()
   }
   conf.set_year(stoi(request().get("y")));
   // TODO: ignore 'i' parameter when rendering PDF
-  conf.set_month(stoi(request().get("i")) + 1);
+  conf.set_month(stoi(request().get("m")));
+
+  // Parse YYYYMMDD
+  long s = stol(request().get("s"));
+  conf.set_start_day(s % 100);
+  s /= 100;
+  conf.set_start_month(s % 100);
+  conf.set_start_year(s / 100);
 
   if (request().get("l") == "ko") {
     conf.set_language(config::Language::KOREAN);

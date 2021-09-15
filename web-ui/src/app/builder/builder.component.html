@@ -28,6 +28,48 @@
     </form>
   </mat-step>
 
+  <mat-step [stepControl]="startDateForm">
+    <form [formGroup]="startDateForm">
+      <ng-template matStepLabel i18n>When would you like to start?</ng-template>
+
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="bible-radio-group"
+        [ngClass] = "{'no-space-bottom': startDateType() === 'custom'}"
+        formControlName="startDateType">
+        <mat-radio-button i18n class="bible-radio-button" value="today">
+          Today
+        </mat-radio-button>
+        <mat-radio-button i18n class="bible-radio-button" value="tomorrow">
+          Tomorrow
+        </mat-radio-button>
+        <mat-radio-button i18n class="bible-radio-button" value="next-month">
+          Next month
+        </mat-radio-button>
+        <mat-radio-button i18n class="bible-radio-button" value="next-year">
+          Next year
+        </mat-radio-button>
+        <mat-radio-button class="bible-radio-button" value="custom">
+          <span i18n class="custom-date">Pick any date:</span>&nbsp;<em class="custom-date">{{ getCustomStartDate() }}</em>
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-calendar
+        *ngIf="startDateType() === 'custom'"
+        class="inline-calendar-card"
+        [selected]=customStartDate
+        [minDate]=minStartDate
+        [maxDate]=maxStartDate
+        (selectedChange)="customStartDate = $event">
+      </mat-calendar>
+
+      <div class=stepper-nav>
+        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
+      </div>
+    </form>
+  </mat-step>
+
   <mat-step [stepControl]="durationForm"
                 *ngIf="['old-testament', 'whole-bible'].includes(
                             coverageType())">
@@ -181,31 +223,24 @@
       ngAfterViewChecked -->
     </lightgallery>
 
-    <div *ngIf="durationType() === 'two-years'" class='label-on-thumbnails'>
-      2022
-    </div>
-    <a
-      *ngFor="let galleryItem of galleryItems; let i = index;"
-      (click)="lightGallery.openGallery(i)"
-      >
-      <img *ngIf="i < 12" [src]="galleryItem.src" class="calendar-thumbnail">
-    </a>
-
-      <div *ngIf="durationType() === 'two-years'" class='label-on-thumbnails second-year'>
-        2023
+    <div *ngFor="let pair of galleryItemsByYear | keyvalue">
+      <div class='label-on-thumbnails'>
+        {{ pair.key }}
       </div>
       <a
-        *ngFor="let galleryItem of galleryItems; let i = index;"
-        (click)="lightGallery.openGallery(i)"
+        *ngFor="let item of pair.value"
+        (click)="lightGallery.openGallery(item.index)"
         >
-        <img *ngIf="i >= 12" [src]="galleryItem.src" class="calendar-thumbnail">
+        <img [src]="item.src" class="calendar-thumbnail">
       </a>
-      <p> </p>
+    </div>
 
-      <div class=stepper-nav>
-        <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
-        <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
-      </div>
+    <p> </p>
+
+    <div class=stepper-nav>
+      <button mat-raised-button color="primary" matStepperNext><span i18n>Next</span> ▼</button>
+      <button mat-stroked-button matStepperPrevious><span i18n>Back</span> ▲</button>
+    </div>
   </mat-step>
 
   <mat-step>

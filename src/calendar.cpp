@@ -68,14 +68,18 @@ struct tm* get_next_day(time_t *t) {
   return localtime(t);
 }
 
-time_t get_first_day_of_month_in_sec(int year, int month) {
+time_t get_date_in_sec(int year, int month, int day) {
   struct tm timeinfo = {0};
 
   timeinfo.tm_year = year - 1900;
   timeinfo.tm_mon = month - 1;
-  timeinfo.tm_mday = 1;
+  timeinfo.tm_mday = day;
 
   return mktime(&timeinfo);
+}
+
+time_t get_first_day_of_month_in_sec(int year, int month) {
+  return get_date_in_sec(year, month, 1);
 }
 
 PangoLayout* init_pango_layout(cairo_t *cr,
@@ -281,12 +285,17 @@ bool Calendar::shouldInclude(const struct tm& tm)
   return true;
 }
 
-int Calendar::countDays(int year)
+int Calendar::countDays(int year_index)
 {
-  time_t t = get_first_day_of_month_in_sec(year, 1);
+  int start_year = conf_.start_year() + year_index;
+
+  time_t t = get_date_in_sec(
+      start_year, conf_.start_month(), conf_.start_day());
   struct tm timeinfo = *localtime(&t);
   int counter = 0;
-  while (timeinfo.tm_year + 1900 == year) {
+  while (timeinfo.tm_year + 1900 == start_year ||
+      timeinfo.tm_mon + 1 < conf_.start_month() ||
+      timeinfo.tm_mday < conf_.start_day()) {
     if (shouldInclude(timeinfo)) {
       ++counter;
     }
@@ -295,7 +304,7 @@ int Calendar::countDays(int year)
   return counter;
 }
 
-std::string Calendar::getPlanFileName()
+std::string Calendar::getPlanFileName(int year_index)
 {
   std::vector<std::string> file_name_tokens;
   switch (conf_.coverage_type()) {
@@ -325,14 +334,15 @@ std::string Calendar::getPlanFileName()
     case config::DurationType::ONE_YEAR:
       file_name_tokens.push_back("1-year");
       break;
-    case config::DurationType::TWO_YEARS_FIRST_YEAR:
-      file_name_tokens.push_back("2-years-1st");
-      break;
-    case config::DurationType::TWO_YEARS_SECOND_YEAR:
-      file_name_tokens.push_back("2-years-2nd");
+    case config::DurationType::TWO_YEARS:
+      if (year_index == 0) {
+        file_name_tokens.push_back("2-years-1st");
+      } else {
+        file_name_tokens.push_back("2-years-2nd");
+      }
       break;
   };
-  file_name_tokens.push_back(std::to_string(countDays(conf_.year())));
+  file_name_tokens.push_back(std::to_string(countDays(year_index)));
   return FLAGS_bible_reading_plans_path +
     join(file_name_tokens, "_") + ".csv";
 }
@@ -340,9 +350,23 @@ std::string Calendar::getPlanFileName()
 std::queue<std::string> Calendar::getBibleReadingPlan()
 {
   std::queue<std::string> bible_reading_plan;
+  readPlanFile(getPlanFileName(0), &bible_reading_plan);
+  if (conf_.duration_type() == config::DurationType::TWO_YEARS) {
+    readPlanFile(getPlanFileName(1), &bible_reading_plan);
+  }
+  return bible_reading_plan;
+}
 
-  logger_->debug(getPlanFileName());
-  std::ifstream infile(getPlanFileName());
+void Calendar::readPlanFile(const std::string file_name,
+    std::queue<std::string>* bible_reading_plan)
+{
+  logger_->debug(file_name);
+
+  std::ifstream infile(file_name);
+  if (!infile) {
+    logger_->error("Cannot open [{}]!", file_name);
+    return;
+  }
   std::string line;
   while (std::getline(infile, line)) {
     auto tokens = split(line, ',');
@@ -376,9 +400,8 @@ std::queue<std::string> Calendar::getBibleReadingPlan()
         }
       }
     }
-    bible_reading_plan.push(text);
+    bible_reading_plan->push(text);
   }
-  return bible_reading_plan;
 }
 
 double Calendar::getDayX(int x_index)
@@ -465,7 +488,12 @@ void Calendar::drawWdayLabel() {
 void Calendar::skipMonth(int year, int month,
     std::queue<std::string>* bible_reading_plan)
 {
-  time_t t = get_first_day_of_month_in_sec(year, month);
+  time_t t;
+  if (year == conf_.start_year() && month == conf_.start_month()) {
+    t = get_date_in_sec(year, month, conf_.start_day());
+  } else {
+    t = get_first_day_of_month_in_sec(year, month);
+  }
   struct tm timeinfo = *localtime(&t);
 
   while (timeinfo.tm_mon == month - 1) {
@@ -490,7 +518,10 @@ void Calendar::drawDaysOfMonth(int year, int month,
     sprintf(buf, "%d", timeinfo.tm_mday);
     drawTextOfDayNumber(x, y, buf);
 
-    if (shouldInclude(timeinfo)) {
+    if (shouldInclude(timeinfo) &&
+        !bible_reading_plan->empty() &&
+        (year > conf_.start_year() || month > conf_.start_month() ||
+         timeinfo.tm_mday >= conf_.start_day())) {
       drawTextOfDayPlan(x, y, bible_reading_plan->front());
       bible_reading_plan->pop();
     }
@@ -547,7 +578,7 @@ void Calendar::drawMonth(int year, int month,
     std::queue<std::string>* bible_reading_plan)
 {
   std::string output_file_name = conf_.output_file_name() + '_' +
-    std::to_string(month);
+    std::to_string(year) + '_' + std::to_string(month);
 
   cairo_surface_t *surface = NULL;
   switch (conf_.output_type()) {
@@ -578,8 +609,7 @@ void Calendar::drawMonth(int year, int month,
 }
 
 void Calendar::drawMonthOnSurface(int year, int month,
-    std::queue<std::string>* bible_reading_plan,
-    cairo_surface_t* surface)
+    std::queue<std::string>* bible_reading_plan, cairo_surface_t* surface)
 {
   y_offset_ = 0;
   cr_ = cairo_create(surface);
@@ -629,15 +659,56 @@ void Calendar::drawMonthOnSurface(int year, int month,
   cairo_destroy(cr_);
 }
 
-void Calendar::streamMonthOnSurface(int year, int month,
-    cairo_surface_t* surface) {
-  std::queue<std::string> bible_reading_plan =
-    getBibleReadingPlan();
+void Calendar::initMonthIteration(int* y, int* m)
+{
+  *y = conf_.start_year();
+  *m = conf_.start_month();
+}
 
-  for (int i = 1; i < conf_.month(); ++i) {
-    skipMonth(conf_.year(), i, &bible_reading_plan);
+bool Calendar::isReadingMonth(int y, int m)
+{
+  int last_year = conf_.start_year() + 1;
+  if (conf_.duration_type() == config::DurationType::TWO_YEARS) {
+    last_year++;
   }
-  drawMonthOnSurface(conf_.year(), conf_.month(), &bible_reading_plan, surface);
+
+  if (y < last_year) {
+    return true;
+  } else if (y == last_year) {
+    if (m < conf_.start_month()) {
+      return true;
+    } else if (m == conf_.start_month() && conf_.start_day() > 1) {
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
+
+bool Calendar::isSelectedMonth(int y, int m)
+{
+  return y == conf_.year() && m == conf_.month();
+}
+
+void Calendar::nextMonth(int* y, int* m)
+{
+  *m += 1;
+  if (*m > 12) {
+    *m = 1;
+    *y += 1;
+  }
+}
+
+void Calendar::streamMonthOnSurface(cairo_surface_t* surface) {
+  std::queue<std::string> bible_reading_plan = getBibleReadingPlan();
+
+  int y, m;
+  initMonthIteration(&y, &m);
+  while (!isSelectedMonth(y, m)) {
+    skipMonth(y, m, &bible_reading_plan);
+    nextMonth(&y, &m);
+  }
+  drawMonthOnSurface(y, m, &bible_reading_plan, surface);
 }
 
 void Calendar::draw()
@@ -645,14 +716,18 @@ void Calendar::draw()
   std::queue<std::string> bible_reading_plan =
     getBibleReadingPlan();
 
+  int y, m;
+  initMonthIteration(&y, &m);
   if (conf_.has_month()) {
-    for (int i = 1; i < conf_.month(); ++i) {
-      skipMonth(conf_.year(), i, &bible_reading_plan);
+    while (!isSelectedMonth(y, m)) {
+      skipMonth(y, m, &bible_reading_plan);
+      nextMonth(&y, &m);
     }
-    drawMonth(conf_.year(), conf_.month(), &bible_reading_plan);
+    drawMonth(y, m, &bible_reading_plan);
   } else {
-    for (int i = 1; i <= 12; ++i) {
-      drawMonth(conf_.year(), i, &bible_reading_plan);
+    while (isReadingMonth(y, m)) {
+      drawMonth(y, m, &bible_reading_plan);
+      nextMonth(&y, &m);
     }
   }
 }
@@ -663,7 +738,7 @@ void Calendar::streamSvg(cairo_write_func_t writeFunc, void *closure)
     cairo_svg_surface_create_for_stream(writeFunc, closure,
         surface_width_, surface_height_);
 
-  streamMonthOnSurface(conf_.year(), conf_.month(), surface);
+  streamMonthOnSurface(surface);
 
   cairo_surface_destroy(surface);
 }
@@ -673,7 +748,7 @@ void Calendar::streamPng(cairo_write_func_t writeFunc, void *closure)
   cairo_surface_t* surface = cairo_image_surface_create(
       CAIRO_FORMAT_ARGB32, surface_width_, surface_height_);
 
-  streamMonthOnSurface(conf_.year(), conf_.month(), surface);
+  streamMonthOnSurface(surface);
 
   cairo_surface_write_to_png_stream(surface, writeFunc, closure);
   cairo_surface_destroy(surface);
@@ -681,27 +756,18 @@ void Calendar::streamPng(cairo_write_func_t writeFunc, void *closure)
 
 void Calendar::streamPdf(cairo_write_func_t writeFunc, void *closure)
 {
-  std::queue<std::string> bible_reading_plan =
-    getBibleReadingPlan();
+  std::queue<std::string> bible_reading_plan = getBibleReadingPlan();
 
   cairo_surface_t* surface =
     cairo_pdf_surface_create_for_stream(writeFunc, closure,
         surface_width_, surface_height_);
 
-  for (int i = 0; i < 12 ; ++i) {
-    drawMonthOnSurface(conf_.year(), i + 1, &bible_reading_plan, surface);
+  int y, m;
+  initMonthIteration(&y, &m);
+  while (isReadingMonth(y, m)) {
+    drawMonthOnSurface(y, m, &bible_reading_plan, surface);
     cairo_surface_show_page(surface);
-  }
-  if (conf_.duration_type() == config::DurationType::TWO_YEARS_FIRST_YEAR) {
-    conf_.set_year(conf_.year() + 1);
-    conf_.set_duration_type(config::DurationType::TWO_YEARS_SECOND_YEAR);
-
-    bible_reading_plan = getBibleReadingPlan();
-
-    for (int i = 0; i < 12 ; ++i) {
-      drawMonthOnSurface(conf_.year(), i + 1, &bible_reading_plan, surface);
-      cairo_surface_show_page(surface);
-    }
+    nextMonth(&y, &m);
   }
   cairo_surface_destroy(surface);
 }

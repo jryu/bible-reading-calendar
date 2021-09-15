@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -34,12 +36,14 @@ import { AboutComponent } from './about/about.component';
     FormsModule,
     LightgalleryModule,
     MatButtonModule,
+    MatDatepickerModule,
     MatDividerModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatFormFieldModule,
     MatMenuModule,
+    MatNativeDateModule,
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
