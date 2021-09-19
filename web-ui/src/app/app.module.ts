@@ -16,6 +16,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -47,10 +49,12 @@ import { AboutComponent } from './about/about.component';
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSnackBarModule,
     MatStepperModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

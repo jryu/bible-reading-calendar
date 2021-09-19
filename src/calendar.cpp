@@ -9,8 +9,8 @@
 #include <iomanip>
 #include <iostream>
 #include <librsvg/rsvg.h>
+#include <list>
 #include <pango/pangocairo.h>
-#include <queue>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <sstream>
@@ -112,6 +112,259 @@ int count_weeks(int year, int month)
 
 } // namespace
 
+class ReadingUnit {
+  public:
+    ReadingUnit() {}
+
+    std::string Print(config::Language language, bool use_full_name) const {
+      std::string text = getBookName(from_book, language, use_full_name);
+      text += " " + from_chapter;
+
+      if (!from_verse.empty()) {
+        text += ":" + from_verse;
+      }
+
+      if (!to_book.empty()) {
+        text += "-";
+        if (from_book != to_book) {
+          text +=
+            getBookName(to_book, language, use_full_name) + " ";
+        }
+
+        if (!to_chapter.empty() &&
+            (from_book != to_book ||
+             from_chapter != to_chapter)) {
+          text += to_chapter;
+        }
+
+        if (!to_verse.empty()) {
+          text += ":" + to_verse;
+        }
+      }
+      return text;
+    }
+
+    std::string from_book;
+    std::string from_chapter;
+    std::string from_verse;
+
+    std::string to_book;
+    std::string to_chapter;
+    std::string to_verse;
+
+  private:
+    static std::string getBookName(
+        const std::string& book_id, config::Language language, bool use_full_name)
+    {
+      const auto& book = books_[language][book_id];
+      if (use_full_name) {
+        return book.full_name;
+      } else {
+        return book.short_name;
+      }
+    }
+
+    static std::map<config::Language, std::map<std::string, Book>> books_;
+};
+
+std::map<config::Language, std::map<std::string, Book>> ReadingUnit::books_ = {
+  { config::Language::KOREAN,
+    {
+      {"Genesis", {"창", "창세기"}},
+      {"Exodus", {"출", "출애굽기"}},
+      {"Leviticus", {"레", "레위기"}},
+      {"Numbers", {"민", "민수기"}},
+      {"Deuteronomy", {"신", "신명기"}},
+      {"Joshua", {"수", "여호수아"}},
+      {"Judges", {"삿", "사사기"}},
+      {"Ruth", {"룻", "룻기"}},
+      {"1 Samuel", {"삼상", "사무엘상"}},
+      {"2 Samuel", {"삼하", "사무엘하"}},
+      {"1 Kings", {"왕상", "열왕기상"}},
+      {"2 Kings", {"왕하", "열왕기하"}},
+      {"1 Chronicles", {"대상", "역대상"}},
+      {"2 Chronicles", {"대하", "역대하"}},
+      {"Ezra", {"스", "에스라"}},
+      {"Nehemiah", {"느", "느헤미야"}},
+      {"Esther", {"에", "에스더"}},
+      {"Job", {"욥", "욥기"}},
+      {"Psalms", {"시", "시편"}},
+      {"Proverbs", {"잠", "잠언"}},
+      {"Ecclesiastes", {"전", "전도서"}},
+      {"Song of Solomon", {"아", "아가"}},
+      {"Isaiah", {"사", "이사야"}},
+      {"Jeremiah", {"렘", "예레미야"}},
+      {"Lamentations", {"애", "예레미야애가"}},
+      {"Ezekiel", {"겔", "에스겔"}},
+      {"Daniel", {"단", "다니엘"}},
+      {"Hosea", {"호", "호세아"}},
+      {"Joel", {"욜", "요엘"}},
+      {"Amos", {"암", "아모스"}},
+      {"Obadiah", {"옵", "오바댜"}},
+      {"Jonah", {"욘", "요나"}},
+      {"Micah", {"미", "미가"}},
+      {"Nahum", {"나", "나훔"}},
+      {"Habakkuk", {"합", "하박국"}},
+      {"Zephaniah", {"습", "스바냐"}},
+      {"Haggai", {"학", "학개"}},
+      {"Zechariah", {"슥", "스가랴"}},
+      {"Malachi", {"말", "말라기"}},
+      {"Matthew", {"마", "마태복음"}},
+      {"Mark", {"막", "마가복음"}},
+      {"Luke", {"눅", "누가복음"}},
+      {"John", {"요", "요한복음"}},
+      {"Acts", {"행", "사도행전"}},
+      {"Romans", {"롬", "로마서"}},
+      {"1 Corinthians", {"고전", "고린도전서"}},
+      {"2 Corinthians", {"고후", "고린도후서"}},
+      {"Galatians", {"갈", "갈라디아서"}},
+      {"Ephesians", {"엡", "에베소서"}},
+      {"Philippians", {"빌", "빌립보서"}},
+      {"Colossians", {"골", "골로새서"}},
+      {"1 Thessalonians", {"살전", "데살로니가전서"}},
+      {"2 Thessalonians", {"살후", "데살로니가후서"}},
+      {"1 Timothy", {"딤전", "디모데전서"}},
+      {"2 Timothy", {"딤후", "디모데후서"}},
+      {"Titus", {"디", "디도서"}},
+      {"Philemon", {"몬", "빌레몬서"}},
+      {"Hebrews", {"히", "히브리서"}},
+      {"James", {"약", "야고보서"}},
+      {"1 Peter", {"벧전", "베드로전서"}},
+      {"2 Peter", {"벧후", "베드로후서"}},
+      {"1 John", {"요일", "요한일서"}},
+      {"2 John", {"요이", "요한이서"}},
+      {"3 John", {"요삼", "요한삼서"}},
+      {"Jude", {"유", "유다서"}},
+      {"Revelation", {"계", "요한계시록"}}
+    }},
+  { config::Language::ENGLISH,
+    {
+      {"Genesis", {"Gen", "Genesis"}},
+      {"Exodus", {"Ex", "Exodus"}},
+      {"Leviticus", {"Lev", "Leviticus"}},
+      {"Numbers", {"Num", "Numbers"}},
+      {"Deuteronomy", {"Deut", "Deuteronomy"}},
+      {"Joshua", {"Josh", "Joshua"}},
+      {"Judges", {"Judg", "Judges"}},
+      {"Ruth", {"Ruth", "Ruth"}},
+      {"1 Samuel", {"1 Sam", "1 Samuel"}},
+      {"2 Samuel", {"2 Sam", "2 Samuel"}},
+      {"1 Kings", {"1 Ki", "1 Kings"}},
+      {"2 Kings", {"2 Ki", "2 Kings"}},
+      {"1 Chronicles", {"1 Chr", "1 Chronicles"}},
+      {"2 Chronicles", {"2 Chr", "2 Chronicles"}},
+      {"Ezra", {"Ezra", "Ezra"}},
+      {"Nehemiah", {"Neh", "Nehemiah"}},
+      {"Esther", {"Est", "Esther"}},
+      {"Job", {"Job", "Job"}},
+      {"Psalms", {"Ps", "Psalms"}},
+      {"Proverbs", {"Prov", "Proverbs"}},
+      {"Ecclesiastes", {"Eccles", "Ecclesiastes"}},
+      {"Song of Solomon", {"Song", "Song of Solomon"}},
+      {"Isaiah", {"Isa", "Isaiah"}},
+      {"Jeremiah", {"Jer", "Jeremiah"}},
+      {"Lamentations", {"Lam", "Lamentations"}},
+      {"Ezekiel", {"Ezek", "Ezekiel"}},
+      {"Daniel", {"Dan", "Daniel"}},
+      {"Hosea", {"Hosea", "Hosea"}},
+      {"Joel", {"Joel", "Joel"}},
+      {"Amos", {"Amos", "Amos"}},
+      {"Obadiah", {"Obad", "Obadiah"}},
+      {"Jonah", {"Jonah", "Jonah"}},
+      {"Micah", {"Micah", "Micah"}},
+      {"Nahum", {"Nahum", "Nahum"}},
+      {"Habakkuk", {"Hab", "Habakkuk"}},
+      {"Zephaniah", {"Zeph", "Zephaniah"}},
+      {"Haggai", {"Hag", "Haggai"}},
+      {"Zechariah", {"Zech", "Zechariah"}},
+      {"Malachi", {"Mal", "Malachi"}},
+      {"Matthew", {"Matt", "Matthew"}},
+      {"Mark", {"Mark", "Mark"}},
+      {"Luke", {"Lu", "Luke"}},
+      {"John", {"John", "John"}},
+      {"Acts", {"Acts", "Acts"}},
+      {"Romans", {"Rom", "Romans"}},
+      {"1 Corinthians", {"1 Cor", "1 Corinthians"}},
+      {"2 Corinthians", {"2 Cor", "2 Corinthians"}},
+      {"Galatians", {"Gal", "Galatians"}},
+      {"Ephesians", {"Eph", "Ephesians"}},
+      {"Philippians", {"Phil", "Philippians"}},
+      {"Colossians", {"Col", "Colossians"}},
+      {"1 Thessalonians", {"1 Thess", "1 Thessalonians"}},
+      {"2 Thessalonians", {"2 Thess", "2 Thessalonians"}},
+      {"1 Timothy", {"1 Tim", "1 Timothy"}},
+      {"2 Timothy", {"2 Tim", "2 Timothy"}},
+      {"Titus", {"Titus", "Titus"}},
+      {"Philemon", {"Philem", "Philemon"}},
+      {"Hebrews", {"Heb", "Hebrews"}},
+      {"James", {"James", "James"}},
+      {"1 Peter", {"1 Peter", "1 Peter"}},
+      {"2 Peter", {"2 Peter", "2 Peter"}},
+      {"1 John", {"1 John", "1 John"}},
+      {"2 John", {"2 John", "2 John"}},
+      {"3 John", {"3 John", "3 John"}},
+      {"Jude", {"Jude", "Jude"}},
+      {"Revelation", {"Rev", "Revelation"}}
+    }},
+};
+
+class DailyReading {
+  public:
+    DailyReading() {}
+
+    void PushBack(ReadingUnit reading_unit) {
+      reading_units_.push_back(std::move(reading_unit));
+    }
+
+    std::string Print(config::Language language) {
+      std::vector<std::string> tokens;
+      for (const auto& reading_unit : reading_units_) {
+        tokens.push_back(reading_unit.Print(language, true));
+      }
+      return join(tokens, "\\n");
+    }
+
+    std::string PrintShort(config::Language language) {
+      std::vector<std::string> tokens;
+      for (const auto& reading_unit : reading_units_) {
+        tokens.push_back(reading_unit.Print(language, false));
+      }
+      return join(tokens, "\n");
+    }
+
+    std::string PrintSingleLine(config::Language language) {
+      std::vector<std::string> tokens;
+      for (const auto& reading_unit : reading_units_) {
+        tokens.push_back(reading_unit.Print(language, false));
+      }
+      return join(tokens, ", ");
+    }
+
+  private:
+    std::list<ReadingUnit> reading_units_;
+};
+
+class ReadingPlan {
+  public:
+    ReadingPlan() {
+    }
+
+    void PushBack(DailyReading daily_reading) {
+      daily_readings_.push_back(std::move(daily_reading));
+    }
+
+    DailyReading PopFront() {
+      DailyReading front = daily_readings_.front();
+      daily_readings_.pop_front();
+      return front;
+    }
+
+    bool empty() { return daily_readings_.empty(); }
+
+  private:
+    std::list<DailyReading> daily_readings_;
+};
+
 std::shared_ptr<spdlog::logger> Calendar::logger_ =
   spdlog::stdout_color_mt("calendar");
 
@@ -130,151 +383,6 @@ Calendar::Calendar(config::CalendarConfig conf) :
   }
   conf_.set_cell_width(((double)
         surface_width_ - conf_.cell_margin() * 2) / 7);
-
-  std::map<std::string, Book> ko_books = {
-    {"Genesis", {"창", "창세기"}},
-    {"Exodus", {"출", "출애굽기"}},
-    {"Leviticus", {"레", "레위기"}},
-    {"Numbers", {"민", "민수기"}},
-    {"Deuteronomy", {"신", "신명기"}},
-    {"Joshua", {"수", "여호수아"}},
-    {"Judges", {"삿", "사사기"}},
-    {"Ruth", {"룻", "룻기"}},
-    {"1 Samuel", {"삼상", "사무엘상"}},
-    {"2 Samuel", {"삼하", "사무엘하"}},
-    {"1 Kings", {"왕상", "열왕기상"}},
-    {"2 Kings", {"왕하", "열왕기하"}},
-    {"1 Chronicles", {"대상", "역대상"}},
-    {"2 Chronicles", {"대하", "역대하"}},
-    {"Ezra", {"스", "에스라"}},
-    {"Nehemiah", {"느", "느헤미야"}},
-    {"Esther", {"에", "에스더"}},
-    {"Job", {"욥", "욥기"}},
-    {"Psalms", {"시", "시편"}},
-    {"Proverbs", {"잠", "잠언"}},
-    {"Ecclesiastes", {"전", "전도서"}},
-    {"Song of Solomon", {"아", "아가"}},
-    {"Isaiah", {"사", "이사야"}},
-    {"Jeremiah", {"렘", "예레미야"}},
-    {"Lamentations", {"애", "예레미야애가"}},
-    {"Ezekiel", {"겔", "에스겔"}},
-    {"Daniel", {"단", "다니엘"}},
-    {"Hosea", {"호", "호세아"}},
-    {"Joel", {"욜", "요엘"}},
-    {"Amos", {"암", "아모스"}},
-    {"Obadiah", {"옵", "오바댜"}},
-    {"Jonah", {"욘", "요나"}},
-    {"Micah", {"미", "미가"}},
-    {"Nahum", {"나", "나훔"}},
-    {"Habakkuk", {"합", "하박국"}},
-    {"Zephaniah", {"습", "스바냐"}},
-    {"Haggai", {"학", "학개"}},
-    {"Zechariah", {"슥", "스가랴"}},
-    {"Malachi", {"말", "말라기"}},
-    {"Matthew", {"마", "마태복음"}},
-    {"Mark", {"막", "마가복음"}},
-    {"Luke", {"눅", "누가복음"}},
-    {"John", {"요", "요한복음"}},
-    {"Acts", {"행", "사도행전"}},
-    {"Romans", {"롬", "로마서"}},
-    {"1 Corinthians", {"고전", "고린도전서"}},
-    {"2 Corinthians", {"고후", "고린도후서"}},
-    {"Galatians", {"갈", "갈라디아서"}},
-    {"Ephesians", {"엡", "에베소서"}},
-    {"Philippians", {"빌", "빌립보서"}},
-    {"Colossians", {"골", "골로새서"}},
-    {"1 Thessalonians", {"살전", "데살로니가전서"}},
-    {"2 Thessalonians", {"살후", "데살로니가후서"}},
-    {"1 Timothy", {"딤전", "디모데전서"}},
-    {"2 Timothy", {"딤후", "디모데후서"}},
-    {"Titus", {"디", "디도서"}},
-    {"Philemon", {"몬", "빌레몬서"}},
-    {"Hebrews", {"히", "히브리서"}},
-    {"James", {"약", "야고보서"}},
-    {"1 Peter", {"벧전", "베드로전서"}},
-    {"2 Peter", {"벧후", "베드로후서"}},
-    {"1 John", {"요일", "요한일서"}},
-    {"2 John", {"요이", "요한이서"}},
-    {"3 John", {"요삼", "요한삼서"}},
-    {"Jude", {"유", "유다서"}},
-    {"Revelation", {"계", "요한계시록"}}
-  };
-
-  std::map<std::string, Book> en_books = {
-    {"Genesis", {"Gen", "Genesis"}},
-    {"Exodus", {"Ex", "Exodus"}},
-    {"Leviticus", {"Lev", "Leviticus"}},
-    {"Numbers", {"Num", "Numbers"}},
-    {"Deuteronomy", {"Deut", "Deuteronomy"}},
-    {"Joshua", {"Josh", "Joshua"}},
-    {"Judges", {"Judg", "Judges"}},
-    {"Ruth", {"Ruth", "Ruth"}},
-    {"1 Samuel", {"1 Sam", "1 Samuel"}},
-    {"2 Samuel", {"2 Sam", "2 Samuel"}},
-    {"1 Kings", {"1 Ki", "1 Kings"}},
-    {"2 Kings", {"2 Ki", "2 Kings"}},
-    {"1 Chronicles", {"1 Chr", "1 Chronicles"}},
-    {"2 Chronicles", {"2 Chr", "2 Chronicles"}},
-    {"Ezra", {"Ezra", "Ezra"}},
-    {"Nehemiah", {"Neh", "Nehemiah"}},
-    {"Esther", {"Est", "Esther"}},
-    {"Job", {"Job", "Job"}},
-    {"Psalms", {"Ps", "Psalms"}},
-    {"Proverbs", {"Prov", "Proverbs"}},
-    {"Ecclesiastes", {"Eccles", "Ecclesiastes"}},
-    {"Song of Solomon", {"Song", "Song of Solomon"}},
-    {"Isaiah", {"Isa", "Isaiah"}},
-    {"Jeremiah", {"Jer", "Jeremiah"}},
-    {"Lamentations", {"Lam", "Lamentations"}},
-    {"Ezekiel", {"Ezek", "Ezekiel"}},
-    {"Daniel", {"Dan", "Daniel"}},
-    {"Hosea", {"Hosea", "Hosea"}},
-    {"Joel", {"Joel", "Joel"}},
-    {"Amos", {"Amos", "Amos"}},
-    {"Obadiah", {"Obad", "Obadiah"}},
-    {"Jonah", {"Jonah", "Jonah"}},
-    {"Micah", {"Micah", "Micah"}},
-    {"Nahum", {"Nahum", "Nahum"}},
-    {"Habakkuk", {"Hab", "Habakkuk"}},
-    {"Zephaniah", {"Zeph", "Zephaniah"}},
-    {"Haggai", {"Hag", "Haggai"}},
-    {"Zechariah", {"Zech", "Zechariah"}},
-    {"Malachi", {"Mal", "Malachi"}},
-    {"Matthew", {"Matt", "Matthew"}},
-    {"Mark", {"Mark", "Mark"}},
-    {"Luke", {"Lu", "Luke"}},
-    {"John", {"John", "John"}},
-    {"Acts", {"Acts", "Acts"}},
-    {"Romans", {"Rom", "Romans"}},
-    {"1 Corinthians", {"1 Cor", "1 Corinthians"}},
-    {"2 Corinthians", {"2 Cor", "2 Corinthians"}},
-    {"Galatians", {"Gal", "Galatians"}},
-    {"Ephesians", {"Eph", "Ephesians"}},
-    {"Philippians", {"Phil", "Philippians"}},
-    {"Colossians", {"Col", "Colossians"}},
-    {"1 Thessalonians", {"1 Thess", "1 Thessalonians"}},
-    {"2 Thessalonians", {"2 Thess", "2 Thessalonians"}},
-    {"1 Timothy", {"1 Tim", "1 Timothy"}},
-    {"2 Timothy", {"2 Tim", "2 Timothy"}},
-    {"Titus", {"Titus", "Titus"}},
-    {"Philemon", {"Philem", "Philemon"}},
-    {"Hebrews", {"Heb", "Hebrews"}},
-    {"James", {"James", "James"}},
-    {"1 Peter", {"1 Peter", "1 Peter"}},
-    {"2 Peter", {"2 Peter", "2 Peter"}},
-    {"1 John", {"1 John", "1 John"}},
-    {"2 John", {"2 John", "2 John"}},
-    {"3 John", {"3 John", "3 John"}},
-    {"Jude", {"Jude", "Jude"}},
-    {"Revelation", {"Rev", "Revelation"}}
-  };
-  books_[config::Language::KOREAN] = ko_books;
-  books_[config::Language::ENGLISH] = en_books;
-}
-
-std::string Calendar::getBookName(const std::string& book_id)
-{
-  return books_[conf_.language()][book_id].short_name;
 }
 
 bool Calendar::shouldInclude(const struct tm& tm)
@@ -347,9 +455,9 @@ std::string Calendar::getPlanFileName(int year_index)
     join(file_name_tokens, "_") + ".csv";
 }
 
-std::queue<std::string> Calendar::getBibleReadingPlan()
+ReadingPlan Calendar::getBibleReadingPlan()
 {
-  std::queue<std::string> bible_reading_plan;
+  ReadingPlan bible_reading_plan;
   readPlanFile(getPlanFileName(0), &bible_reading_plan);
   if (conf_.duration_type() == config::DurationType::TWO_YEARS) {
     readPlanFile(getPlanFileName(1), &bible_reading_plan);
@@ -358,7 +466,7 @@ std::queue<std::string> Calendar::getBibleReadingPlan()
 }
 
 void Calendar::readPlanFile(const std::string file_name,
-    std::queue<std::string>* bible_reading_plan)
+    ReadingPlan* bible_reading_plan)
 {
   logger_->debug(file_name);
 
@@ -370,37 +478,25 @@ void Calendar::readPlanFile(const std::string file_name,
   std::string line;
   while (std::getline(infile, line)) {
     auto tokens = split(line, ',');
-    std::string text;
+    DailyReading daily_reading;
     for (int i = 1; i < tokens.size(); i += 6) {
-      if (i > 1) text += '\n';
+      ReadingUnit reading_unit;
 
-      text += getBookName(tokens[i]) + " " +
-        tokens[i + 1];
+      reading_unit.from_book = tokens[i];
+      reading_unit.from_chapter = tokens[i + 1];
+      reading_unit.from_verse = tokens[i + 2];
 
-      if (!tokens[i + 2].empty()) {
-        text += ":" + tokens[i + 2];
+      reading_unit.to_book = tokens[i + 3];
+      if (i + 4 < tokens.size()) {
+        reading_unit.to_chapter = tokens[i + 4];
+      }
+      if (i + 5 < tokens.size()) {
+        reading_unit.to_verse = tokens[i + 5];
       }
 
-      if (!tokens[i + 3].empty()) {
-        text += "-";
-        if (tokens[i] != tokens[i + 3]) {
-          text +=
-            getBookName(tokens[i + 3]) + " ";
-        }
-
-        if (tokens[i + 1] != tokens[i + 4]) {
-          text += tokens[i + 4];
-          if (i + 5 < tokens.size() && !tokens[i + 5].empty()) {
-            text += ":";
-          }
-        }
-
-        if (i + 5 < tokens.size() && !tokens[i + 5].empty()) {
-          text += tokens[i + 5];
-        }
-      }
+      daily_reading.PushBack(reading_unit);
     }
-    bible_reading_plan->push(text);
+    bible_reading_plan->PushBack(daily_reading);
   }
 }
 
@@ -486,7 +582,7 @@ void Calendar::drawWdayLabel() {
 }
 
 void Calendar::skipMonth(int year, int month,
-    std::queue<std::string>* bible_reading_plan)
+    ReadingPlan* bible_reading_plan)
 {
   time_t t;
   if (year == conf_.start_year() && month == conf_.start_month()) {
@@ -498,14 +594,14 @@ void Calendar::skipMonth(int year, int month,
 
   while (timeinfo.tm_mon == month - 1) {
     if (shouldInclude(timeinfo)) {
-      bible_reading_plan->pop();
+      bible_reading_plan->PopFront();
     }
     timeinfo = *get_next_day(&t);
   }
 }
 
 void Calendar::drawDaysOfMonth(int year, int month,
-    std::queue<std::string>* bible_reading_plan)
+    ReadingPlan* bible_reading_plan)
 {
   time_t t = get_first_day_of_month_in_sec(year, month);
   struct tm timeinfo = *localtime(&t);
@@ -522,8 +618,8 @@ void Calendar::drawDaysOfMonth(int year, int month,
         !bible_reading_plan->empty() &&
         (year > conf_.start_year() || month > conf_.start_month() ||
          timeinfo.tm_mday >= conf_.start_day())) {
-      drawTextOfDayPlan(x, y, bible_reading_plan->front());
-      bible_reading_plan->pop();
+      drawTextOfDayPlan(x, y,
+          bible_reading_plan->PopFront().PrintShort(conf_.language()));
     }
 
     timeinfo = *get_next_day(&t);
@@ -575,7 +671,7 @@ void Calendar::drawTextOfDayPlan(int x, int y,
 }
 
 void Calendar::drawMonth(int year, int month,
-    std::queue<std::string>* bible_reading_plan)
+    ReadingPlan* bible_reading_plan)
 {
   std::string output_file_name = conf_.output_file_name() + '_' +
     std::to_string(year) + '_' + std::to_string(month);
@@ -609,7 +705,7 @@ void Calendar::drawMonth(int year, int month,
 }
 
 void Calendar::drawMonthOnSurface(int year, int month,
-    std::queue<std::string>* bible_reading_plan, cairo_surface_t* surface)
+    ReadingPlan* bible_reading_plan, cairo_surface_t* surface)
 {
   y_offset_ = 0;
   cr_ = cairo_create(surface);
@@ -700,7 +796,7 @@ void Calendar::nextMonth(int* y, int* m)
 }
 
 void Calendar::streamMonthOnSurface(cairo_surface_t* surface) {
-  std::queue<std::string> bible_reading_plan = getBibleReadingPlan();
+  ReadingPlan bible_reading_plan = getBibleReadingPlan();
 
   int y, m;
   initMonthIteration(&y, &m);
@@ -713,8 +809,7 @@ void Calendar::streamMonthOnSurface(cairo_surface_t* surface) {
 
 void Calendar::draw()
 {
-  std::queue<std::string> bible_reading_plan =
-    getBibleReadingPlan();
+  ReadingPlan bible_reading_plan = getBibleReadingPlan();
 
   int y, m;
   initMonthIteration(&y, &m);
@@ -756,7 +851,7 @@ void Calendar::streamPng(cairo_write_func_t writeFunc, void *closure)
 
 void Calendar::streamPdf(cairo_write_func_t writeFunc, void *closure)
 {
-  std::queue<std::string> bible_reading_plan = getBibleReadingPlan();
+  ReadingPlan bible_reading_plan = getBibleReadingPlan();
 
   cairo_surface_t* surface =
     cairo_pdf_surface_create_for_stream(writeFunc, closure,
@@ -770,4 +865,72 @@ void Calendar::streamPdf(cairo_write_func_t writeFunc, void *closure)
     nextMonth(&y, &m);
   }
   cairo_surface_destroy(surface);
+}
+
+
+int Calendar::iCalendar(std::ostream* ostream)
+{
+  *ostream << "BEGIN:VCALENDAR" << std::endl;
+  *ostream << "VERSION:2.0" << std::endl;
+
+  *ostream << "PRODID:-//Bible Reading Calendar//biblereadingcalendar.com//";
+  switch (conf_.language()) {
+    case config::Language::ENGLISH:
+      *ostream << "EN";
+      break;
+    case config::Language::KOREAN:
+      *ostream << "KO";
+      break;
+  }
+  *ostream << std::endl;
+
+  *ostream << "CALSCALE:GREGORIAN" << std::endl;
+  *ostream << "METHOD:PUBLISH" << std::endl;
+
+  *ostream << "X-WR-CALNAME:";
+  switch (conf_.language()) {
+    case config::Language::ENGLISH:
+      *ostream << "Bible Reading Calendar";
+      break;
+    case config::Language::KOREAN:
+      *ostream << "성경 읽기 달력";
+      break;
+  }
+  *ostream << std::endl;
+
+  *ostream << "X-WR-TIMEZONE:Etc/GMT" << std::endl;
+
+  ReadingPlan bible_reading_plan = getBibleReadingPlan();
+
+  time_t t = get_date_in_sec(
+      conf_.start_year(), conf_.start_month(), conf_.start_day());
+  struct tm timeinfo = *localtime(&t);
+
+  while (!bible_reading_plan.empty()) {
+    if (shouldInclude(timeinfo)) {
+      *ostream << "BEGIN:VEVENT" << std::endl;
+
+      auto daily_reading = bible_reading_plan.PopFront();
+
+      *ostream << "SUMMARY:" <<
+        daily_reading.PrintSingleLine(conf_.language()) <<
+        std::endl;
+
+      *ostream << "DESCRIPTION:" <<
+        daily_reading.Print(conf_.language()) << std::endl;
+
+      char yyyymmdd[10];
+      strftime(yyyymmdd, 10, "%Y%m%d", &timeinfo);
+      *ostream << "DTSTART:" << yyyymmdd << std::endl;
+      *ostream << "DTEND:" << yyyymmdd << std::endl;
+      *ostream << "UID:" << yyyymmdd <<
+        "@biblereadingcalendar.com" << std::endl;
+    }
+
+    *ostream << "END:VEVENT" << std::endl;
+    timeinfo = *get_next_day(&t);
+  }
+
+  *ostream << "END:VCALENDAR" << std::endl;
+  return 200;
 }

@@ -2,7 +2,10 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatDatepicker } from '@angular/material/datepicker';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
+
+import { Clipboard } from '@angular/cdk/clipboard';
 
 import { LightGallery } from 'lightgallery/lightgallery';
 import lgZoom from 'lightgallery/plugins/zoom';
@@ -81,6 +84,8 @@ export class BuilderComponent implements OnInit {
     0, 1);
 
   constructor(private _fb: FormBuilder,
+              private _snackBar: MatSnackBar,
+              private _clipboard: Clipboard,
               @Inject(LOCALE_ID) public locale: string) {
   }
 
@@ -273,5 +278,13 @@ export class BuilderComponent implements OnInit {
     param.append('l', this.locale);
     param.append('s', this.getStartDateParam());
     return param.toString();
+  }
+
+  copyCalendarLink() {
+    this._clipboard.copy('http://biblereadingcalendar.com/draw/c.ics?' +
+                         this.getUrlParam(this.getStartDate()));
+
+    this._snackBar.open($localize`Link is copied to clipboard`, '',
+                        {duration: 3000});
   }
 }

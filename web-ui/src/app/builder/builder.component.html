@@ -244,13 +244,30 @@
   </mat-step>
 
   <mat-step>
-    <ng-template i18n matStepLabel>Download</ng-template>
+    <ng-template i18n matStepLabel>The Final Step</ng-template>
+
+    <label i18n class="label-on-form-field">
+      In order to print the calendar, download a PDF file.
+    </label>
 
     <a mat-raised-button color="primary" [href]="pdfUrl"
       i18n-download download="bible-reading-calendar.pdf" target="_blank">
-      <mat-icon aria-hidden="false" aria-label="download icon">download</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="print icon">print</mat-icon>
       <span i18n>Download PDF</span>
     </a>
+
+    <p> </p>
+    <mat-divider></mat-divider>
+
+    <label i18n class="label-on-form-field">
+      iCalendar URL can be added to various applications like Google Calendar, Microsoft Outlook, iCloud Calendar and more.
+    </label>
+
+    <button mat-raised-button color="primary"
+      (click)=copyCalendarLink()>
+      <mat-icon aria-hidden="false" aria-label="calendar icon">date_range</mat-icon>
+      <span i18n>Copy iCalendar URL</span>
+    </button>
     <p> </p>
 
     <div class=stepper-nav>

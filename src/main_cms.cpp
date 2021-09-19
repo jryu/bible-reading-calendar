@@ -20,6 +20,7 @@ class CalendarApp : public cppcms::application {
       dispatcher().assign("/img.svg", &CalendarApp::svg, this);
       dispatcher().assign("/img.pdf", &CalendarApp::pdf, this);
       dispatcher().assign("/img.png", &CalendarApp::png, this);
+      dispatcher().assign("/c.ics", &CalendarApp::ics, this);
       dispatcher().assign(".*", &CalendarApp::redirect, this);
     }
 
@@ -37,6 +38,7 @@ class CalendarApp : public cppcms::application {
     void svg();
     void pdf();
     void png();
+    void ics();
 
     static cairo_status_t cairoWriteFunc(
         void* closure, const unsigned char* data, unsigned int length) {
@@ -60,6 +62,7 @@ class CalendarApp : public cppcms::application {
 
   private:
     config::CalendarConfig buildConfig();
+    void initResponse();
 
     unsigned char* cairoBuffer_;
     unsigned int cairoBufferOffset_;
@@ -176,10 +179,15 @@ config::CalendarConfig CalendarApp::buildConfig()
   return conf;
 }
 
+void CalendarApp::initResponse()
+{
+  response().cache_control("public, max-age=3600");
+}
+
 void CalendarApp::svg()
 {
+  initResponse();
   response().set_header("Content-Type", "image/svg+xml");
-  response().cache_control("public, max-age=3600");
 
   Calendar calendar(buildConfig());
   calendar.streamSvg(CalendarApp::cairoWriteFunc, this);
@@ -187,7 +195,7 @@ void CalendarApp::svg()
 
 void CalendarApp::pdf()
 {
-  response().cache_control("public, max-age=0");
+  initResponse();
   response().set_header("Content-Type", "application/pdf");
 
   Calendar calendar(buildConfig());
@@ -196,11 +204,24 @@ void CalendarApp::pdf()
 
 void CalendarApp::png()
 {
-  response().cache_control("public, max-age=3600");
+  initResponse();
   response().set_header("Content-Type", "image/png");
 
   Calendar calendar(buildConfig());
   calendar.streamPng(CalendarApp::cairoWriteFunc, this);
+}
+
+void CalendarApp::ics()
+{
+  initResponse();
+  auto& ostream = response().out();
+  response().set_header("Content-Type", "text/calendar");
+
+  Calendar calendar(buildConfig());
+  int status = calendar.iCalendar(&ostream);
+  if (status != 200) {
+    response().status(status);
+  }
 }
 
 int main(int argc,char ** argv)

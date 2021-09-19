@@ -24,6 +24,8 @@ struct Book {
   std::string full_name;
 };
 
+class ReadingPlan;
+
 class Calendar {
   public:
     Calendar(config::CalendarConfig conf);
@@ -31,10 +33,9 @@ class Calendar {
     void streamSvg(cairo_write_func_t writeFunc, void *closure);
     void streamPng(cairo_write_func_t writeFunc, void *closure);
     void streamPdf(cairo_write_func_t writeFunc, void *closure);
+    int iCalendar(std::ostream* ostream);
 
   private:
-    std::string getBookName(const std::string& book_id);
-
     bool shouldInclude(const struct tm& tm);
 
     int countDays(int year_index);
@@ -46,9 +47,9 @@ class Calendar {
 
     std::string getPlanFileName(int year_index);
 
-    std::queue<std::string> getBibleReadingPlan();
+    ReadingPlan getBibleReadingPlan();
     void readPlanFile(const std::string file_name,
-        std::queue<std::string>* bible_reading_plan);
+        ReadingPlan* bible_reading_plan);
 
     double getDayX(int x_index);
     double getDayY(int y_index);
@@ -58,7 +59,7 @@ class Calendar {
     void drawWdayLabel();
 
     void drawDaysOfMonth(int year, int month,
-        std::queue<std::string>* bible_reading_plan);
+        ReadingPlan* bible_reading_plan);
 
     void drawTextOfDayNumber(int x, int y,
         const char* text);
@@ -67,20 +68,19 @@ class Calendar {
         std::string text);
 
     void skipMonth(int year, int month,
-        std::queue<std::string>* bible_reading_plan);
+        ReadingPlan* bible_reading_plan);
 
     void drawMonth(int year, int month,
-        std::queue<std::string>* bible_reading_plan);
+        ReadingPlan* bible_reading_plan);
 
     void drawMonthOnSurface(int year, int month,
-        std::queue<std::string>* bible_reading_plan,
+        ReadingPlan* bible_reading_plan,
         cairo_surface_t* surface);
 
     void streamMonthOnSurface(cairo_surface_t* surface);
 
     static std::shared_ptr<spdlog::logger> logger_;
 
-    std::map<config::Language, std::map<std::string, Book>> books_;
 
     config::CalendarConfig conf_;
 
