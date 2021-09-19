@@ -218,7 +218,7 @@ export class BuilderComponent implements OnInit {
       d.setDate(1);
 
       for (let i = 0; i < totalMonths; i++) {
-        let url = '/draw/img.png?' + this.getUrlParam(d);
+        let url = '/cpp/img.png?' + this.getUrlParam(d);
 
         this.galleryItems.push({
           src: url,
@@ -238,7 +238,7 @@ export class BuilderComponent implements OnInit {
     } else if (stepper.selectedIndex == stepper.steps.length - 1) {
       // "Download" is selected
       // TODO: Remove unnecessary month param.
-      this.pdfUrl = '/draw/img.pdf?' + this.getUrlParam(this.getStartDate());
+      this.pdfUrl = '/cpp/img.pdf?' + this.getUrlParam(this.getStartDate());
     }
   }
 
@@ -281,7 +281,7 @@ export class BuilderComponent implements OnInit {
   }
 
   copyCalendarLink() {
-    this._clipboard.copy('http://biblereadingcalendar.com/draw/c.ics?' +
+    this._clipboard.copy('http://biblereadingcalendar.com/cpp/c.ics?' +
                          this.getUrlParam(this.getStartDate()));
 
     this._snackBar.open($localize`Link is copied to clipboard`, '',
