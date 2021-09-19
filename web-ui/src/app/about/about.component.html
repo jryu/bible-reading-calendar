@@ -1,1 +1,48 @@
-<p>about works!</p>
+<div class=content>
+  <h3 i18n>Introduction</h3>
+
+  <p i18n>This site has been inspired by bible reading plans like</p>
+  <ul>
+    <li><a i18n i18n-href href="https://en.wikipedia.org/wiki/Robert_Murray_M%27Cheyne">M'Cheyne</a> <span i18n>bible reading plan</span></li>
+    <li>5x5x5 <span i18n>bible reading plan</span></li>
+  </ul>
+
+  <p i18n>Its goal is to let users build their own plan using features of their choice and access easily. For example:</p>
+  <ul>
+    <li i18n>Start reading the bible any day.</li>
+    <li i18n>Select a day for a break or catch up once a week.</li>
+    <li><span i18n>Choose to read the M'Cheyne bible reading plan in 2 years as D. A. Carson has suggested in his book </span><a i18n i18n-href href="https://www.amazon.com/dp/1581348150">For the Love of God</a><span i18n>.</span></li>
+    <li i18n>Add calendar to other applications which support iCalendar format.</li>
+  </ul>
+  <p i18n>
+  Please note that the reading plan created by generic algorithm is slightly different from M'Cheyne or 5x5x5 but the difference is minimal when it is scheduled over 365 days.
+  </p>
+
+  <h3 i18n>Share</h3>
+
+  <p i18n>If you have found this site useful, please share it with other people!</p>
+
+  <share-buttons
+    [theme]="'circles-dark'"
+    [include]="['facebook','twitter','sms','email','copy']"
+    [show]="5"
+    [url]="'http://biblereadingcalendar.com/'"
+    [title]="'Bible Reading Calendar'">
+  </share-buttons>
+
+  <h3 i18n>Get Involved</h3>
+
+  <p><span i18n>In order to give more direct feedback to those who are working on this project or found something that is not working as intended, please feel free to</span>&nbsp;<a i18n href='https://github.com/jryu/bible-reading-calendar/issues'>leave an issue at this GitHub page</a><span i18n>. We would appreciate your feedback.</span></p>
+
+  <p i18n>We are also looking for someone who is inspired to improve the site like favicon or calendar design. The calendar is rendered using a fully featured vector graphic library, so it should be able to reproduce any design if someone contributes a mockup design of a calendar.</p>
+
+  <p i18n>The algorithm which generates bible reading plans may also be improved. It currently minimizes the standard deviation of the number of verses to read per day, but it does not consider how well verses are distributed on a weekly basis. For example, some weeks may have more verses to read than other weeks, but the algorithm is not aware of it. The code which generates the plans is extracted <a href="https://github.com/jryu/bible-reading-plan">here</a>, so you can work on it even if you are not familiar with Web development.</p>
+
+  <p i18n>In case you are interested, you are welcome to leave a message using the same GitHub link which has been shared on top of this section!</p>
+
+  <h3 i18n>Credits</h3>
+  <ul>
+    <li><a href="https://en.wikipedia.org/wiki/Trinity">The Trinity</a></li>
+    <li i18n><a href="https://www.youtube.com/c/류준호">Junho Ryu</a></li>
+  </ul>
+</div>

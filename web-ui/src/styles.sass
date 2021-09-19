@@ -1,12 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use '~@angular/material' as mat
+@import '~ngx-sharebuttons/themes/circles'
 
 html, body
   height: 100%
 
 body
   margin: 0
+  font-size: 14px
   font-family: Roboto, "Helvetica Neue", sans-serif
 
 @include mat.core()
@@ -29,3 +31,10 @@ $my-theme: mat.define-light-theme($my-primary, $my-accent, $my-warn)
 @include mat.stepper-theme($my-theme)
 @include mat.toolbar-theme($my-theme)
 @include mat.snack-bar-theme($my-theme)
+
+a
+  color: mat.get-color-from-palette($my-accent, 500)
+  font-weight: 500
+
+a:hover
+  text-decoration: none

@@ -22,9 +22,12 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { LightgalleryModule } from 'lightgallery/angular';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+
 import { AppRoutingModule } from './app-routing.module';
-import { BuilderComponent } from './builder/builder.component';
 import { AboutComponent } from './about/about.component';
+import { BuilderComponent } from './builder/builder.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { AboutComponent } from './about/about.component';
     BrowserAnimationsModule,
     FormsModule,
     LightgalleryModule,
+    ShareButtonsModule,
+    ShareIconsModule,
     MatButtonModule,
     MatDatepickerModule,
     MatDividerModule,
