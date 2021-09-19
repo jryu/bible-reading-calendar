@@ -34,8 +34,11 @@
             "localize": true,
             "inlineStyleLanguage": "sass",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/styles.sass"
@@ -104,8 +107,11 @@
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "sass",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/styles.sass"
